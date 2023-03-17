@@ -1,13 +1,18 @@
 "use strict";
 
 const { DataTypes } = require("sequelize");
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    options.tableName = 'Users'
     return Promise.all([
-      queryInterface.addColumn("Users", "firstName", { type: DataTypes.STRING }),
-      queryInterface.addColumn("Users", "lastName", { type: DataTypes.STRING }),
+      queryInterface.addColumn(options, "firstName", { type: DataTypes.STRING }),
+      queryInterface.addColumn(options,  "lastName", { type: DataTypes.STRING }),
     ]);
 
     /**
@@ -19,8 +24,8 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeColumn("Users", "firstName");
-    await queryInterface.removeColumn("Users", "lastName");
+    await queryInterface.removeColumn(options, "firstName");
+    await queryInterface.removeColumn(options, "lastName");
 
     /**
      * Add reverting commands here.
