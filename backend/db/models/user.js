@@ -2,7 +2,6 @@
 
 const { Model, Validator } = require("sequelize");
 
-
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -17,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
 
   User.init(
     {
+      firstName: { type: DataTypes.STRING },
+      lastName: { type: DataTypes.STRING },
       username: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -50,9 +51,9 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "User",
       defaultScope: {
         attributes: {
-          exclude: ["hashedPassword", "email", "createdAt", "updatedAt"]
-        }
-      }
+          exclude: ["hashedPassword", "email", "createdAt", "updatedAt"],
+        },
+      },
     }
   );
   return User;
