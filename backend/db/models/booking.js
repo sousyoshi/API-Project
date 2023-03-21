@@ -8,12 +8,18 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-     Booking.belongsTo(models.User, {foreignKey: 'userId'})
-     Booking.belongsTo(models.Spot, {foreignKey: 'spotId' })
+      Booking.belongsTo(models.User, { foreignKey: "userId" });
+      Booking.belongsTo(models.Spot, { foreignKey: "spotId" });
     }
   }
   Booking.init(
     {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       spotId: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
       startDate: DataTypes.DATE,
