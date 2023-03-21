@@ -10,7 +10,6 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     options.tableName = "Spots";
     return queryInterface.bulkInsert(options, [{
-      ownerId: 1,
       address: '1111 1 Lane',
       city: 'Demo-city',
       state: 'Statopia',
