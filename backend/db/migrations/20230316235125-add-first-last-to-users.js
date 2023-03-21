@@ -10,10 +10,9 @@ if (process.env.NODE_ENV === "production") {
 module.exports = {
   async up(queryInterface, Sequelize) {
     options.tableName = "Users";
-    return Promise.all([
-      queryInterface.addColumn(options, "firstName", { type: DataTypes.STRING }),
-      queryInterface.addColumn(options, "lastName", { type: DataTypes.STRING }),
-    ]);
+
+    await queryInterface.addColumn(options, "firstName", { type: DataTypes.STRING }),
+      await queryInterface.addColumn(options, "lastName", { type: DataTypes.STRING });
 
     /**
      * Add altering commands here.
@@ -25,7 +24,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     options.tableName = "Users";
-    return Promise.all([queryInterface.removeColumn(options, "firstName"), queryInterface.removeColumn(options, "lastName")]);
+    await queryInterface.removeColumn(options, "firstName"), await queryInterface.removeColumn(options, "lastName");
 
     /**
      * Add reverting commands here.
