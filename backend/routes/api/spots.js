@@ -6,7 +6,7 @@ const router = express.Router()
 router.get("/", async (req, res)=>{
 const spots = await Spot.findAll({include: User})
 const bookings = await Booking.findAll({include: User})
-return res.json(spots)
+return res.json(bookings)
 
 
 
