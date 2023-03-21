@@ -12,8 +12,8 @@ module.exports = {
     return queryInterface.bulkInsert(options, [{
       spotId: 1,
       userId: 1,
-      startDate: '12-11-2022',
-      endDate: '1-20-2023'
+      startDate: '2022-12-11',
+      endDate: '2023-1-20'
     }],{})
     /**
      * Add seed commands here.
