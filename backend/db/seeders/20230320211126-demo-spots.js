@@ -47,7 +47,18 @@ module.exports = {
           name: "Fortress of Solitude",
           description: "Spacious ice cave with many amentites. Great for crime fighting.",
           price: 600000,
-        },
+        }, {
+          ownerId: 4,
+          address: "200 Up Up and Away St",
+          city: "Malibu",
+          state: "California",
+          country: "USA",
+          lat: 30.7128,
+          lng: 64.006,
+          name: "Palais de Stark",
+          description: "Sprawling mansion overlooking the Pacific.",
+          price: 900000,
+        }
       ],
       {}
     );

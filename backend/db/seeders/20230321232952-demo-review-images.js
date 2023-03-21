@@ -1,5 +1,4 @@
 "use strict";
-
 let options = {};
 if (process.env.NODE_ENV === "production") {
   options.schema = process.env.SCHEMA; // define your schema in options object
@@ -7,32 +6,20 @@ if (process.env.NODE_ENV === "production") {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    options.tableName = "Reviews";
+    options.tableName = "ReviewImages";
     return queryInterface.bulkInsert(
       options,
       [
         {
-          spotId: 2,
-          userId: 2,
-          review: "Great place to study my rogues gallery.",
-          stars: 5,
-        },
-        {
-          spotId: 2,
-          userId: 3,
-          review: "Too many bats. Need more ice!",
-          stars: 2,
-        },
-        {
-          spotId: 3,
-          userId: 2,
-          review: "Cold. But not as cold as my heart.",
-          stars: 4,
-        },
-        { spotId: 2,
-          userId: 4,
-          review: "Cool tech. Cool cars. Cool t-rex. No time machine though.",
-          stars: 4,},
+          reviewId: 1,
+          url: "Fortress-of-Solitude.png",
+        }, {
+          reviewId: 2,
+          url: 'Bat-cave.png'
+        }, {
+          reviewId: 3,
+          url: 'Metropolis.png'
+        }
       ],
       {}
     );
@@ -48,8 +35,8 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    options.tableName = 'Reviews'
-    const Op = Sequelize.Op;
+    options.tableName = "ReviewImages"
+    const Op = Sequelize.Op
     return queryInterface.bulkDelete(options)
     /**
      * Add commands to revert seed here.
