@@ -30,7 +30,7 @@ module.exports = {
     options.tableName = 'Bookings';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      startDate: {[Op.in]: ['12-11-2022']}
+      startDate: {[Op.in]: ['2022-12-11']}
     })
     /**
      * Add commands to revert seed here.
