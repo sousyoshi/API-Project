@@ -10,7 +10,7 @@ router.get("/current", requireAuth, async (req, res) => {
   const Reviews = await Review.findAll({
     include: [
       { model: User },
-      { model: Spot },
+      { model: Spot, attributes:{ exclude: ['description'] }},
       { model: ReviewImage }
     ],
      where:{
