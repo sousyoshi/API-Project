@@ -21,8 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-      ownerId: 
-        type: DataTypes.INTEGER,
+      ownerId: DataTypes.INTEGER,
       address: DataTypes.STRING,
       city: DataTypes.STRING,
       state: DataTypes.STRING,
