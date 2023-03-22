@@ -1,25 +1,58 @@
-const express = require("express")
+const express = require("express");
 
-const {Spot, Booking, User} = require('../../db/models')
-const router = express.Router()
+const { Spot, Review, Booking, SpotImage, sequelize } = require("../../db/models");
+const { requireAuth } = require("../../utils.js/auth");
+const router = express.Router();
 
-router.get("/", async (req, res)=>{
-const spots = await Spot.findAll()
-const bookings = await Booking.findAll({include: User})
-return res.json(spots)
+router.get("/", async (req, res) => {
+  const Spots = await Spot.findAll({ include: { model: SpotImage } });
 
+  let spotList = [];
+  Spots.forEach((spot) => {
+    spotList.push(spot.toJSON());
+  });
 
+  for (let i = 0; i < spotList.length; i++) {
+    let spot = spotList[i];
+    for (let j = 0; j < spot.SpotImages.length; j++) {
+      let image = spot.SpotImages[j];
+        if (image.preview === true) {
+        spot.previewImage = image.url;
+      }
+        if (!spot.previewImage) {
+        spot.previewImage = "no image found";
+      }
+    }
+    delete spot.SpotImages;
 
-})
+    const reviewData = await Review.findOne({
+      where: {
+        spotId: spot.id,
+      },
+      attributes: {
+        include: [
+          [sequelize.fn("AVG", sequelize.col("stars")), "avgRating"]
+        ],
+      },
+    });
 
+    let data = parseFloat(reviewData.toJSON().avgRating).toFixed(1);
 
+    spot.avgRating = +data;
+  }
 
+  res.json({ spotList });
+});
 
+router.get("/current", requireAuth, async (req, res) => {
+  
 
+  const Spots = await Spot.findAll({
+    include: {
+      model: SpotImage}
+    });
 
+  return res.json({});
+});
 
-
-
-
-
-module.exports = router
+module.exports = router;
