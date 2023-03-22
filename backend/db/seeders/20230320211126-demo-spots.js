@@ -77,7 +77,7 @@ module.exports = {
     options.tableName = "Spots";
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      name: { [Op.in]: ["DemoSpot"] },
+      ownerId: { [Op.in]: [1, 2, 3, 4] },
     });
     /**
      * Add commands to revert seed here.

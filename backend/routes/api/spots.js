@@ -16,25 +16,28 @@ router.get("/", async (req, res) => {
     let spot = spotList[i];
     for (let j = 0; j < spot.SpotImages.length; j++) {
       let image = spot.SpotImages[j];
-      if (image.preview === true) {
+        if (image.preview === true) {
         spot.previewImage = image.url;
       }
-      if (!spot.previewImage) {
+        if (!spot.previewImage) {
         spot.previewImage = "no image found";
       }
     }
     delete spot.SpotImages;
+
     const reviewData = await Review.findOne({
       where: {
         spotId: spot.id,
       },
       attributes: {
-        include: [[sequelize.fn("AVG", sequelize.col("stars")), "avgRating"]],
+        include: [
+          [sequelize.fn("AVG", sequelize.col("stars")), "avgRating"]
+        ],
       },
     });
 
     let data = parseFloat(reviewData.toJSON().avgRating).toFixed(1);
-    
+
     spot.avgRating = +data;
   }
 
@@ -42,9 +45,12 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/current", requireAuth, async (req, res) => {
-  let user = req.user
-  console.log(user)
-  const Spots = await Spot.findAll();
+  
+
+  const Spots = await Spot.findAll({
+    include: {
+      model: SpotImage}
+    });
 
   return res.json({});
 });
