@@ -21,7 +21,9 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-      ownerId: {type: DataTypes.INTEGER, references: {model: "User", key: 'id'}},
+      ownerId: {
+        type: DataTypes.INTEGER, references: {
+          model: "Users", key: 'id'}},
       address: DataTypes.STRING,
       city: DataTypes.STRING,
       state: DataTypes.STRING,
