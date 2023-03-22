@@ -20,8 +20,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
-    }, 
-      ownerId: DataTypes.INTEGER,
+    },
+      ownerId: {type: DataTypes.INTEGER, references: {model: User, key: 'id'}},
       address: DataTypes.STRING,
       city: DataTypes.STRING,
       state: DataTypes.STRING,
