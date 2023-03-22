@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     },
       ownerId: {
         type: DataTypes.INTEGER, references: {
-          model: "Users", key: 'id'}},
+          model: "User", key: 'id'}},
       address: DataTypes.STRING,
       city: DataTypes.STRING,
       state: DataTypes.STRING,
