@@ -1,6 +1,6 @@
 "use strict";
 
-const { Model, Validator} = require("sequelize");
+const { Model, Validator } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -10,19 +10,20 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-     User.hasMany(models.Booking, {foreignKey: 'userId'})
-     User.hasMany(models.Spot, {as: 'ownerId'})
-     User.hasMany(models.Review, {foreignKey: 'userId'})
+      User.hasMany(models.Booking, { foreignKey: "userId" });
+      User.hasMany(models.Spot, { as: "ownerId" });
+      User.hasMany(models.Review, { foreignKey: "userId" });
     }
   }
 
   User.init(
-    {id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true
-    },
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       firstName: { type: DataTypes.STRING },
       lastName: { type: DataTypes.STRING },
       username: {
