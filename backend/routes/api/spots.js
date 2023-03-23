@@ -2,6 +2,7 @@ const express = require("express");
 
 const { Spot, Review, Booking, SpotImage, sequelize } = require("../../db/models");
 const { requireAuth } = require("../../utils.js/auth");
+const { handleValidationErrors } = require("../../utils.js/validation");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -42,9 +43,10 @@ router.get("/", async (req, res) => {
   res.json({ spotList });
 });
 
-router.post("/", requireAuth, async (req, res) => {
+router.post("/", requireAuth, async (req, res, next) => {
   const { user } = req;
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
   const newSpot = await Spot.create({
     ownerId: user.id,
     address,
@@ -62,15 +64,29 @@ router.post("/", requireAuth, async (req, res) => {
 });
 
 router.get("/current", requireAuth, async (req, res) => {
-  let user = req.user;
+  const { user } = req;
 
   const Spots = await Spot.findAll({
     include: {
       model: SpotImage,
     },
+    where: { id: user.id },
   });
 
-  return res.json({});
+  return res.json({ Spots });
+});
+
+router.delete("/:spotId", requireAuth, async (req, res) => {
+  const {user} = req
+  const spot = await Spot.findByPk(req.params.spotId, {
+    where: {
+      ownerId: user.id
+    }
+  });
+
+  if (!spot) res.json({ message: `Spot couldn't be found` });
+  await spot.destroy();
+  res.json({ message: "Successfully deleted" });
 });
 
 module.exports = router;
