@@ -1,6 +1,7 @@
 const express = require("express");
+const { where } = require("sequelize");
 
-const { Spot, Review, Booking, SpotImage, sequelize } = require("../../db/models");
+const { Spot, ReviewImage, Review, User, SpotImage, sequelize } = require("../../db/models");
 const { requireAuth } = require("../../utils.js/auth");
 const { handleValidationErrors } = require("../../utils.js/validation");
 const router = express.Router();
@@ -63,9 +64,6 @@ router.post("/", requireAuth, async (req, res, next) => {
   res.status(201).json(newSpot);
 });
 
-
-
-
 router.get("/current", requireAuth, async (req, res) => {
   const { user } = req;
 
@@ -75,48 +73,73 @@ router.get("/current", requireAuth, async (req, res) => {
     },
     where: { id: user.id },
   });
-let userSpotList = [];
-Spots.forEach(spot=>{
-  userSpotList.push(spot.toJSON())
-
-})
-for (let i = 0; i < userSpotList.length; i++) {
-  let spot = userSpotList[i];
-  for (let j = 0; j < spot.SpotImages.length; j++) {
-    let image = spot.SpotImages[j];
-    if (image.preview === true) {
-      spot.previewImage = image.url;
-    }
-    if (!spot.previewImage) {
-      spot.previewImage = "no image found";
-    }
-  }
-  delete spot.SpotImages;
-
-  const reviewData = await Review.findOne({
-    where: {
-      spotId: spot.id,
-    },
-    attributes: {
-      include: [[sequelize.fn("AVG", sequelize.col("stars")), "avgRating"]],
-    },
+  let userSpotList = [];
+  Spots.forEach((spot) => {
+    userSpotList.push(spot.toJSON());
   });
+  for (let i = 0; i < userSpotList.length; i++) {
+    let spot = userSpotList[i];
+    for (let j = 0; j < spot.SpotImages.length; j++) {
+      let image = spot.SpotImages[j];
+      if (image.preview === true) {
+        spot.previewImage = image.url;
+      }
+      if (!spot.previewImage) {
+        spot.previewImage = "no image found";
+      }
+    }
+    delete spot.SpotImages;
 
-  let data = parseFloat(reviewData.toJSON().avgRating).toFixed(1);
+    const reviewData = await Review.findOne({
+      where: {
+        spotId: spot.id,
+      },
+      attributes: {
+        include: [[sequelize.fn("AVG", sequelize.col("stars")), "avgRating"]],
+      },
+    });
 
-  spot.avgRating = +data;
-}
+    let data = parseFloat(reviewData.toJSON().avgRating).toFixed(1);
 
+    spot.avgRating = +data;
+  }
 
   return res.json({ userSpotList });
 });
 
+router.get("/:spotId/reviews", async (req, res) => {
+const spot = await Spot.findByPk(req.params.spotId)
+const Reviews = await spot.getReviews({include: [User , ReviewImage]})
 
+  res.json({ Reviews });
+});
 
+router.put("/:spotId", requireAuth, async (req, res) => {
+  const { user } = req;
+  console.log(req.body);
+  const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
+  const spot = await Spot.findByPk(req.params.spotId, {
+    where: {
+      ownerId: user.id,
+    },
+  });
+  await spot.update({
+    ownerId: user.id,
+    address,
+    city,
+    state,
+    country,
+    lat,
+    lng,
+    name,
+    description,
+    price,
+  });
 
-
-
+  if (!spot) res.json({ message: `Spot couldn't be found` });
+  res.json(spot);
+});
 
 router.delete("/:spotId", requireAuth, async (req, res) => {
   const { user } = req;
