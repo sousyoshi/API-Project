@@ -77,11 +77,12 @@ router.get("/current", requireAuth, async (req, res) => {
 });
 
 router.delete("/:spotId", requireAuth, async (req, res) => {
-  const {user} = req
+  const { user } = req;
+ 
   const spot = await Spot.findByPk(req.params.spotId, {
     where: {
-      ownerId: user.id
-    }
+      ownerId: user.id,
+    },
   });
 
   if (!spot) res.json({ message: `Spot couldn't be found` });
