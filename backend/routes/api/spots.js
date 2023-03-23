@@ -63,6 +63,9 @@ router.post("/", requireAuth, async (req, res, next) => {
   res.status(201).json(newSpot);
 });
 
+
+
+
 router.get("/current", requireAuth, async (req, res) => {
   const { user } = req;
 
@@ -72,13 +75,52 @@ router.get("/current", requireAuth, async (req, res) => {
     },
     where: { id: user.id },
   });
+let userSpotList = [];
+Spots.forEach(spot=>{
+  userSpotList.push(spot.toJSON())
 
-  return res.json({ Spots });
+})
+for (let i = 0; i < userSpotList.length; i++) {
+  let spot = userSpotList[i];
+  for (let j = 0; j < spot.SpotImages.length; j++) {
+    let image = spot.SpotImages[j];
+    if (image.preview === true) {
+      spot.previewImage = image.url;
+    }
+    if (!spot.previewImage) {
+      spot.previewImage = "no image found";
+    }
+  }
+  delete spot.SpotImages;
+
+  const reviewData = await Review.findOne({
+    where: {
+      spotId: spot.id,
+    },
+    attributes: {
+      include: [[sequelize.fn("AVG", sequelize.col("stars")), "avgRating"]],
+    },
+  });
+
+  let data = parseFloat(reviewData.toJSON().avgRating).toFixed(1);
+
+  spot.avgRating = +data;
+}
+
+
+  return res.json({ userSpotList });
 });
+
+
+
+
+
+
+
 
 router.delete("/:spotId", requireAuth, async (req, res) => {
   const { user } = req;
- 
+
   const spot = await Spot.findByPk(req.params.spotId, {
     where: {
       ownerId: user.id,
