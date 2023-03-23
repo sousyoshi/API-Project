@@ -31,9 +31,7 @@ router.get("/", async (req, res) => {
       where: {
         spotId: spot.id,
       },
-      attributes: {
-        include: [[sequelize.fn("AVG", sequelize.col("stars")), "avgRating"]],
-      },
+      attributes: [[sequelize.fn("AVG", sequelize.col("stars")), "avgRating"]],
     });
 
     let data = parseFloat(reviewData.toJSON().avgRating).toFixed(1);
@@ -94,9 +92,7 @@ router.get("/current", requireAuth, async (req, res) => {
       where: {
         spotId: spot.id,
       },
-      attributes: {
-        include: [[sequelize.fn("AVG", sequelize.col("stars")), "avgRating"]],
-      },
+      attributes: [[sequelize.fn("AVG", sequelize.col("stars")), "avgRating"]],
     });
 
     let data = parseFloat(reviewData.toJSON().avgRating).toFixed(1);
@@ -108,15 +104,15 @@ router.get("/current", requireAuth, async (req, res) => {
 });
 
 router.get("/:spotId/reviews", async (req, res) => {
-const spot = await Spot.findByPk(req.params.spotId)
-const Reviews = await spot.getReviews({include: [User , ReviewImage]})
+  const spot = await Spot.findByPk(req.params.spotId);
+  const Reviews = await spot.getReviews({ include: [User, ReviewImage] });
 
   res.json({ Reviews });
 });
 
 router.put("/:spotId", requireAuth, async (req, res) => {
   const { user } = req;
-  console.log(req.body);
+
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
   const spot = await Spot.findByPk(req.params.spotId, {
