@@ -69,7 +69,7 @@ router.get("/current", requireAuth, async (req, res) => {
     include: {
       model: SpotImage,
     },
-    where: { id: user.id },
+    where: { ownerId: user.id },
   });
   let userSpotList = [];
   Spots.forEach((spot) => {
