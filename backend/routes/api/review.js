@@ -29,18 +29,40 @@ router.get("/current", requireAuth, async (req, res) => {
   res.json({ Reviews });
 });
 
+router.post("/:reviewId/images", requireAuth, async (req, res) => {
+  const { user } = req;
+  const { id } = user;
+  const { url } = req.body;
+  let userReview = await Review.findByPk(req.params.reviewId, {
+    where: {
+      userId: id,
+    },
+  });
+  if (!userReview) res.json({ message: `Review couldn't be found` });
+   const numOfImages = await ReviewImage.count()
 
-router.delete('/:reviewId', requireAuth, async(req, res)=>{
-const {user} = req;
+    if(numOfImages === 11)  res.status(403).json({message: "Maximum number of images for this resource was reached"})
 
-const review = await Review.findByPk(req.params.reviewId, {
-  where: {
-    userId: user.id
-  }
-})
-if(!review) res.json({message: `Review couldn't be found`})
-await review.destroy()
-res.json({message: "Successfully deleted"})
-})
+
+  const newImage = await ReviewImage.create({
+    reviewId: req.params.reviewId,
+    url,
+  });
+
+  res.json(newImage);
+});
+
+router.delete("/:reviewId", requireAuth, async (req, res) => {
+  const { user } = req;
+
+  const review = await Review.findByPk(req.params.reviewId, {
+    where: {
+      userId: user.id,
+    },
+  });
+  if (!review) res.json({ message: `Review couldn't be found` });
+  await review.destroy();
+  res.json({ message: "Successfully deleted" });
+});
 
 module.exports = router;
