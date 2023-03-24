@@ -35,11 +35,10 @@ router.get("/", async (req, res) => {
     });
 
     let data = parseFloat(reviewData.toJSON().avgRating).toFixed(1);
-
+    
     spot.avgRating = +data;
   }
-
-  res.json({ spotList });
+   res.json({ spotList });
 });
 
 router.post("/", requireAuth, async (req, res, next) => {
