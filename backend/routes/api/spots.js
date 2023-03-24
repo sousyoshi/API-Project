@@ -35,10 +35,10 @@ router.get("/", async (req, res) => {
     });
 
     let data = parseFloat(reviewData.toJSON().avgRating).toFixed(1);
-    
+
     spot.avgRating = +data;
   }
-   res.json({ spotList });
+  res.json({ spotList });
 });
 
 router.post("/", requireAuth, async (req, res, next) => {
@@ -105,7 +105,7 @@ router.get("/current", requireAuth, async (req, res) => {
 router.get("/:spotId/reviews", async (req, res) => {
   const spot = await Spot.findByPk(req.params.spotId);
   const Reviews = await spot.getReviews({ include: [User, ReviewImage] });
-
+  if (!spot) res.status(404).json({ message: `Spot couldn't be found` });
   res.json({ Reviews });
 });
 
