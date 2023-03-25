@@ -1,7 +1,7 @@
 const express = require("express");
-const { where } = require("sequelize");
 
-const { Spot, ReviewImage, Review, User, SpotImage, sequelize } = require("../../db/models");
+const { Spot, ReviewImage, Review, User, SpotImage, Booking, sequelize } = require("../../db/models");
+
 const { requireAuth } = require("../../utils.js/auth");
 const { handleValidationErrors } = require("../../utils.js/validation");
 const router = express.Router();
@@ -16,6 +16,7 @@ router.get("/", async (req, res) => {
 
   for (let i = 0; i < spotList.length; i++) {
     let spot = spotList[i];
+    if (!spot.SpotImages.length) spot.previewImage = "no image found";
     for (let j = 0; j < spot.SpotImages.length; j++) {
       let image = spot.SpotImages[j];
       if (image.preview === true) {
@@ -76,13 +77,12 @@ router.get("/current", requireAuth, async (req, res) => {
   });
   for (let i = 0; i < userSpotList.length; i++) {
     let spot = userSpotList[i];
+    if (!spot.SpotImages.length) spot.previewImage = "no image found";
+
     for (let j = 0; j < spot.SpotImages.length; j++) {
       let image = spot.SpotImages[j];
       if (image.preview === true) {
         spot.previewImage = image.url;
-      }
-      if (!spot.previewImage || !spot.previewImage.length) {
-        spot.previewImage = "no image found";
       }
     }
     delete spot.SpotImages;
@@ -132,6 +132,58 @@ router.get("/:spotId", async (req, res) => {
   res.json(spotArr);
 });
 
+// router.get("/:spotId/bookings", requireAuth, async (req, res) => {
+//   const { user } = req;
+//   const bookings = await Booking.findAll({ attributes: { exclude: ["id", "userId", "createdAt", "updatedAt"] } });
+//   if (bookings.userId !== user.id) res.json({ Bookings: bookings });
+//   let bookArr = []
+
+//   const userBookings = await Booking.findAll(req.params.spotId, {include:{model: User}, where: { userId: user.id } });
+
+//   userBookings.forEach(bookings=>{
+//     bookArr.push(bookings.toJSON())
+
+//   })
+//   res.json(bookArr);
+// });
+
+router.post("/:spotId/images", requireAuth, async (req, res) => {
+  const { user } = req;
+  const { id } = user;
+  const { url, preview } = req.body;
+  const spot = await Spot.findByPk(req.params.spotId,{where: {userId: user.id}});
+
+  if (!spot) res.status(404).json({ message: `Spot couldn't be found` });
+  if (user) {
+    const newImage = await SpotImage.create({
+      userId: id,
+      url,
+      preview,
+    });
+    res.json(newImage);
+  }
+});
+
+router.post("/:spotId/reviews", requireAuth, async (req, res) => {
+  const { user } = req;
+  const { review, stars } = req.body;
+
+  const spot = await Spot.findByPk(req.params.spotId);
+
+  if (!spot) res.status(404).json({ message: `Spot couldn't be found` });
+
+  const userReview = await spot.getReviews(req.params.spotId);
+
+  if (userReview) res.status(403).json({ message: `User already has a review for this spot` });
+  const newReview = await Review.create({
+    spotId: req.params.spotId,
+    userId: user.id,
+    review,
+    stars,
+  });
+  res.status(201).json(newReview);
+});
+
 router.get("/:spotId/reviews", async (req, res) => {
   const spot = await Spot.findByPk(req.params.spotId);
   const Reviews = await spot.getReviews({ include: [User, ReviewImage] });
@@ -166,18 +218,17 @@ router.put("/:spotId", requireAuth, async (req, res) => {
   res.json(spot);
 });
 
-router.delete("/:spotId", requireAuth, async (req, res) => {
+router.delete("/:spotId", requireAuth, async (req, _res) => {
   const { user } = req;
 
-  const spot = await Spot.findByPk(req.params.spotId, {
-    where: {
-      ownerId: user.id,
-    },
-  });
-
-  if (!spot) res.json({ message: `Spot couldn't be found` });
+  const spot = await Spot.findByPk(req.params.spotId);
+  if (user.id !== spot.ownerId) {
+    _res.status(403).json({
+      message: "Forbidden",
+    });
+  }
+  if (!spot) _res.json({ message: `Spot couldn't be found` });
   await spot.destroy();
-  res.json({ message: "Successfully deleted" });
+  _res.json({ message: "Successfully deleted" });
 });
-
 module.exports = router;
