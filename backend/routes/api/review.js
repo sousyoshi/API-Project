@@ -43,10 +43,14 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
 
   if (numOfImages >= 10) res.status(403).json({ message: "Maximum number of images for this resource was reached" });
 
-  const newImage = await ReviewImage.create({
+  const newImage = await ReviewImage.scope('defaultScope').create({
     reviewId: req.params.reviewId,
     url,
   });
+
+ delete newImage.reviewId
+ delete newImage.createdAt
+ delete newImage.updatedAt
 
   res.json(newImage);
 });

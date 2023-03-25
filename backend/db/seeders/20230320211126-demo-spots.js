@@ -58,7 +58,7 @@ module.exports = {
           name: "Palais de Stark",
           description: "Sprawling mansion overlooking the Pacific.",
           price: 900000,
-        }
+        },
       ],
       {}
     );

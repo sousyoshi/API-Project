@@ -33,6 +33,13 @@ module.exports = {
           userId: 1,
           review: "Cool tech. Cool cars. Cool t-rex. No time machine though.",
           stars: 4,},
+
+          {spotId: 3,
+            userId: 2,
+            review: "Ehhhh, honestly not that nice.",
+            stars: 2
+
+          }
       ],
       {}
     );

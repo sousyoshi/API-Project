@@ -81,7 +81,7 @@ router.get("/current", requireAuth, async (req, res) => {
       if (image.preview === true) {
         spot.previewImage = image.url;
       }
-      if (!spot.previewImage) {
+      if (!spot.previewImage || !spot.previewImage.length) {
         spot.previewImage = "no image found";
       }
     }
@@ -102,6 +102,36 @@ router.get("/current", requireAuth, async (req, res) => {
   return res.json({ userSpotList });
 });
 
+router.get("/:spotId", async (req, res) => {
+  const spotArr = [];
+  const spot = await Spot.findByPk(req.params.spotId, {
+    include: [
+      {
+        model: SpotImage,
+        attributes: { exclude: ["createdAt", "updatedAt", "spotId"] },
+      },
+      {
+        model: User,
+        as: "Owner",
+        attributes: ["id", "firstName", "lastName"],
+      },
+    ],
+  });
+  if (!spot) res.status(404).json({ message: `Spot couldn't be found` });
+
+  const numOfReviews = await Review.count({ where: { spotId: req.params.spotId } });
+  const sumOfStars = await Review.sum("stars", { where: { spotId: req.params.spotId } });
+
+  spotArr.push(spot.toJSON());
+
+  for (let i = 0; i < spotArr.length; i++) {
+    const spotObj = spotArr[i];
+    spotObj.numReviews = numOfReviews;
+    spotObj.avgStarRating = +(sumOfStars / numOfReviews).toFixed(2);
+  }
+  res.json(spotArr);
+});
+
 router.get("/:spotId/reviews", async (req, res) => {
   const spot = await Spot.findByPk(req.params.spotId);
   const Reviews = await spot.getReviews({ include: [User, ReviewImage] });
@@ -119,6 +149,7 @@ router.put("/:spotId", requireAuth, async (req, res) => {
       ownerId: user.id,
     },
   });
+  if (!spot) res.json({ message: `Spot couldn't be found` });
   await spot.update({
     ownerId: user.id,
     address,
@@ -132,7 +163,6 @@ router.put("/:spotId", requireAuth, async (req, res) => {
     price,
   });
 
-  if (!spot) res.json({ message: `Spot couldn't be found` });
   res.json(spot);
 });
 
