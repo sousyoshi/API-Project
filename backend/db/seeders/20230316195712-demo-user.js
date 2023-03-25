@@ -33,14 +33,21 @@ module.exports = {
           hashedPassword: bcrypt.hashSync("nokryptonite"),
           firstName: "Clark",
           lastName: "Kent",
-        },{
+        },
+        {
           username: "IronMan",
           email: "Tony@Stark.io",
           hashedPassword: bcrypt.hashSync("jarvis"),
           firstName: "Tony",
           lastName: "Stark",
-
-        }
+        },
+        {
+          username: "!SpiderMan",
+          email: "Peter@Parker.io",
+          hashedPassword: bcrypt.hashSync("webhead"),
+          firstName: "Peter",
+          lastName: "Parker",
+        },
       ],
       {}
     );
@@ -50,7 +57,7 @@ module.exports = {
     options.tableName = "Users";
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      username: { [Op.in]: ["Demo-lition", "Batman", "Superman", "IronMan"] },
+      username: { [Op.in]: ["Demo-lition", "Batman", "Superman", "IronMan", "!SpiderMan"] },
     });
     /**
      * Add commands to revert seed here.
