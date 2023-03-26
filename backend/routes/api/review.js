@@ -11,6 +11,8 @@ const validateReviewItems = [
   handleValidationErrors,
 ];
 
+const validReviewImageItems = [check("url").exists({ checkFalsy: true }).withMessage("URL must be provided"), handleValidationErrors];
+
 router.get("/current", requireAuth, async (req, res) => {
   const { user } = req;
   const { id } = user;
@@ -18,7 +20,8 @@ router.get("/current", requireAuth, async (req, res) => {
   const Reviews = await Review.findAll({
     include: [
       {
-        model: User, attributes : {exclude: ['username', 'email', 'hashedPassword', 'createdAt', 'updatedAt']}
+        model: User,
+        attributes: { exclude: ["username", "email", "hashedPassword", "createdAt", "updatedAt"] },
       },
       {
         model: Spot,
@@ -35,10 +38,10 @@ router.get("/current", requireAuth, async (req, res) => {
     },
   });
 
-  res.json({ Reviews });
+  return res.json({ Reviews });
 });
 
-router.post("/:reviewId/images", requireAuth, async (req, res) => {
+router.post("/:reviewId/images", [requireAuth, validReviewImageItems], async (req, res) => {
   const { user } = req;
   const { id } = user;
   const { url } = req.body;
@@ -49,7 +52,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
   });
   if (!userReview) res.json({ message: `Review couldn't be found` });
   const numOfImages = await userReview.getReviewImages();
-  console.log(numOfImages);
+
   if (numOfImages.length === 10) return res.status(403).json({ message: "Maximum number of images for this resource was reached" });
 
   let newImage = await ReviewImage.create({
@@ -61,7 +64,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
   delete newImage.createdAt;
   delete newImage.updatedAt;
 
-  res.json(newImage);
+   return res.json(newImage);
 });
 
 router.put("/:reviewId", [requireAuth, validateReviewItems], async (req, res) => {
@@ -69,7 +72,8 @@ router.put("/:reviewId", [requireAuth, validateReviewItems], async (req, res) =>
   const { review, stars } = req.body;
   const reviewToUpdate = await Review.findByPk(req.params.reviewId);
   if (!reviewToUpdate) return res.status(404).json({ message: `Review couldn't be found` });
-  if (reviewToUpdate.userId !== user.id) return;
+
+  if (reviewToUpdate.userId !== user.id) return res.status(403).json({ message: "Forbidden" });
   reviewToUpdate.review = review;
   reviewToUpdate.stars = stars;
   await reviewToUpdate.save;
