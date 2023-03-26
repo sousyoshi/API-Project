@@ -1,10 +1,23 @@
 const express = require("express");
 
 const { Spot, ReviewImage, Review, User, SpotImage, Booking, sequelize } = require("../../db/models");
-
+const { check } = require("express-validator");
 const { requireAuth } = require("../../utils.js/auth");
 const { handleValidationErrors } = require("../../utils.js/validation");
 const router = express.Router();
+
+const validateSpotItems = [
+  check("address").exists({ checkFalsy: true }).withMessage("Street address is required"),
+  check("city").exists({ checkFalsy: true }).withMessage("City is required"),
+  check("state").exists({ checkFalsy: true }).withMessage("State is required"),
+  check("country").exists({ checkFalsy: true }).withMessage("Country is required"),
+  check("lat").isLatLong().withMessage("Latitude is not valid"),
+  check("lng").isLatLong().withMessage("Longitude is not valid"),
+  check("name").exists({ checkFalsy: true }).isLength({ max: 49 }).withMessage("Name must be less than 50 characters"),
+  check("description").exists({ checkFalsy: true }).withMessage("Name must be less than 50 characters"),
+  check("price").exists({ checkFalsy: true }).withMessage("Name must be less than 50 characters"),
+  handleValidationErrors,
+];
 
 router.get("/", async (req, res) => {
   const Spots = await Spot.findAll({ include: { model: SpotImage } });
@@ -42,7 +55,7 @@ router.get("/", async (req, res) => {
   res.json({ spotList });
 });
 
-router.post("/", requireAuth, async (req, res, next) => {
+router.post("/", [requireAuth, validateSpotItems], async (req, res, next) => {
   const { user } = req;
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
@@ -151,7 +164,7 @@ router.post("/:spotId/images", requireAuth, async (req, res) => {
   const { user } = req;
   const { id } = user;
   const { url, preview } = req.body;
-  const spot = await Spot.findByPk(req.params.spotId,{where: {userId: user.id}});
+  const spot = await Spot.findByPk(req.params.spotId, { where: { userId: user.id } });
 
   if (!spot) res.status(404).json({ message: `Spot couldn't be found` });
   if (user) {
@@ -191,7 +204,7 @@ router.get("/:spotId/reviews", async (req, res) => {
   res.json({ Reviews });
 });
 
-router.put("/:spotId", requireAuth, async (req, res) => {
+router.put("/:spotId", [requireAuth, validateSpotItems], async (req, res) => {
   const { user } = req;
 
   const { address, city, state, country, lat, lng, name, description, price } = req.body;

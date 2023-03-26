@@ -22,17 +22,17 @@ module.exports = {
           references: { model: "Spots" },
         },
         userId: {
-          
+
           type: Sequelize.INTEGER,
           references: { model: "Users" },
         },
         startDate: {
           allowNull: false,
-          type: Sequelize.DATE,
+          type: Sequelize.DATEONLY,
         },
         endDate: {
           allowNull: false,
-          type: Sequelize.DATE,
+          type: Sequelize.DATEONLY,
         },
         createdAt: {
           allowNull: false,
