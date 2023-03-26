@@ -13,7 +13,14 @@ router.get('/current', requireAuth, async(req, res)=>{
         bookArr.push(el.toJSON())
 
     });
-    res.json(bookArr)
+    res.json({Bookings:bookArr})
+})
+
+router.delete('/:bookingId', requireAuth, async(req, res)=>{
+    const booking = await Booking.findByPk(req.params.bookingId,{where: {userId: req.user.id}})
+    if(!booking) res.status(404).json({message: `Booking couldn't be found`});
+    await booking.destroy()
+    res.json({message: "Successfully deleted"})
 })
 
 
