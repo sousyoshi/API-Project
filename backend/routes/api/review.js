@@ -77,7 +77,7 @@ router.put("/:reviewId", [requireAuth, validateReviewItems], async (req, res) =>
   reviewToUpdate.review = review;
   reviewToUpdate.stars = stars;
   await reviewToUpdate.save;
-  res.json(reviewToUpdate);
+  return res.json(reviewToUpdate);
 });
 
 router.delete("/:reviewId", requireAuth, async (req, res) => {

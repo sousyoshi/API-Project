@@ -26,7 +26,17 @@ const validateReviewItems = [
 ];
 
 router.get("/", async (req, res) => {
-  const Spots = await Spot.findAll({ include: { model: SpotImage } });
+  let { page, size } = req.query;
+  let where = {};
+  let pagination = {  };
+
+  size = size === undefined || size > 20 ? 20 : parseInt(size);
+  page = page === undefined || page > 10 ? 1 : parseInt(page);
+
+  pagination.limit = size;
+  pagination.offset = size * (page - 1);
+
+  const Spots = await Spot.findAll({ include: { model: SpotImage }, ...pagination });
 
   let spotList = [];
   Spots.forEach((spot) => {
@@ -59,7 +69,7 @@ router.get("/", async (req, res) => {
 
     spot.avgRating = +data;
   }
-  res.json({ Spots: spotList });
+   return res.json({ Spots: spotList, page, size });
 });
 
 router.post("/", [requireAuth, validateSpotItems], async (req, res, next) => {
@@ -225,7 +235,7 @@ router.post("/:spotId/bookings", requireAuth, async (req, res) => {
       },
     });
 
-  if (spot.dataValues.id === req.user.id) return res.json({message:`Must not be user to book`});
+  if (spot.dataValues.id === req.user.id) return res.json({ message: `Must not be user to book` });
   const bookings = await spot.getBookings();
 
   bookings.forEach((booking) => {
