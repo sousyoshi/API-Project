@@ -9,9 +9,10 @@ router.delete("/:imageId", requireAuth, async (req, res) => {
     include: { model: Review },
     where: { userId: user.id },
   });
-  if(!reviewImage) res.status(404).json({message: `Review image couldn't be found`})
-  await reviewImage.destroy()
-  res.json({message: "Successfully deleted"});
+  if(!user) return res.status(403).json({message: "Forbidden"})
+  if (!reviewImage) return res.status(404).json({ message: `Review image couldn't be found` });
+  await reviewImage.destroy();
+  return res.json({ message: "Successfully deleted" });
 });
 
 module.exports = router;
