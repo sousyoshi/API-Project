@@ -37,7 +37,9 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     options.tableName = "ReviewImages"
     const Op = Sequelize.Op
-    return queryInterface.bulkDelete(options)
+    return queryInterface.bulkDelete(options, {
+      reviewId: {[Op.in]: [1,2,3]}
+    })
     /**
      * Add commands to revert seed here.
      *
