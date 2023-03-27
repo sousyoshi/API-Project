@@ -25,10 +25,16 @@ const validateReviewItems = [
   handleValidationErrors,
 ];
 
-router.get("/", async (req, res) => {
+const validateQuery = [
+  check("page").isFloat({ min: 1 }).withMessage("Page must be greater than or equal to 1"),
+  check("size").isFloat({ min: 1 }).withMessage("Size must be greater than or equal to 1"),
+  handleValidationErrors,
+];
+
+router.get("/", validateQuery, async (req, res) => {
   let { page, size } = req.query;
-  let where = {};
-  let pagination = {  };
+
+  let pagination = {};
 
   size = size === undefined || size > 20 ? 20 : parseInt(size);
   page = page === undefined || page > 10 ? 1 : parseInt(page);
@@ -69,7 +75,7 @@ router.get("/", async (req, res) => {
 
     spot.avgRating = +data;
   }
-   return res.json({ Spots: spotList, page, size });
+  return res.json({ Spots: spotList, page, size });
 });
 
 router.post("/", [requireAuth, validateSpotItems], async (req, res, next) => {
