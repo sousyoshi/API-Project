@@ -115,7 +115,7 @@ router.get("/current", requireAuth, async (req, res) => {
   });
   for (let i = 0; i < userSpotList.length; i++) {
     let spot = userSpotList[i];
-    
+
 
     for (let j = 0; j < spot.SpotImages.length; j++) {
       let image = spot.SpotImages[j];
@@ -218,8 +218,8 @@ router.post("/:spotId/reviews", [requireAuth, validateReviewItems], async (req, 
   if (!spot) return res.status(404).json({ message: `Spot couldn't be found` });
 
   const userReview = await spot.getReviews(req.params.spotId);
-
-  if (userReview) return res.status(403).json({ message: `User already has a review for this spot` });
+   console.log(userReview)
+  if (userReview.length) return res.status(403).json({ message: `User already has a review for this spot` });
   const newReview = await Review.create({
     spotId: req.params.spotId,
     userId: user.id,
