@@ -31,13 +31,15 @@ const validateQuery = [
   handleValidationErrors,
 ];
 
-router.get("/", validateQuery, async (req, res) => {
+router.get("/", async (req, res) => {
   let { page, size } = req.query;
 
   let pagination = {};
 
   size = size === undefined || size > 20 ? 20 : parseInt(size);
   page = page === undefined || page > 10 ? 1 : parseInt(page);
+
+  if(page < 1 || size < 1) return res.json({message: 'Bad Request', errors: {page: "Page must be greater than or equal to 1", size: "Size must be greater than or equal to 1"}})
 
   pagination.limit = size;
   pagination.offset = size * (page - 1);
@@ -113,11 +115,11 @@ router.get("/current", requireAuth, async (req, res) => {
   });
   for (let i = 0; i < userSpotList.length; i++) {
     let spot = userSpotList[i];
-    if (!spot.SpotImages.length) spot.previewImage = "no image found";
+    
 
     for (let j = 0; j < spot.SpotImages.length; j++) {
       let image = spot.SpotImages[j];
-      if (image.preview === true) {
+      if (image.preview) {
         spot.previewImage = image.url;
       } else {
         spot.previewImage = "no image found";
