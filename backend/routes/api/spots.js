@@ -169,7 +169,7 @@ router.get("/:spotId", async (req, res) => {
     spotObj.numReviews = numOfReviews;
     spotObj.avgStarRating = +(sumOfStars / numOfReviews).toFixed(2);
   }
-  res.json(spotArr);
+  res.json(spotArr[0]);
 });
 
 router.get("/:spotId/bookings", requireAuth, async (req, res) => {
