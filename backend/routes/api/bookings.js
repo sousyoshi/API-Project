@@ -48,7 +48,8 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
 
     const currStartDate = new Date(booking.startDate).getTime()
     const currEndDate = new Date(booking.endDate).getTime();
-    if(endDate <= currEndDate) return res.status(403).json({message: `Past bookings can't be modified`})
+
+    if(startDate <= currStartDate) return res.status(403).json({message: `Past bookings can't be modified`})
     if (startDate >= currStartDate && startDate <= currEndDate) {
       return res.status(403).json({
         message: "Sorry, this spot is already booked for the specified dates",
@@ -79,7 +80,7 @@ router.delete("/:bookingId", requireAuth, async (req, res) => {
   const startDate = new Date(booking.startDate);
   const bookingStartDate = startDate.getTime();
   const todayDate = Date.now();
-  if (todayDate <= bookingStartDate) return res.status(403).json({ message: "Bookings that have been started cannot be deleted" });
+  if (todayDate >= bookingStartDate) return res.status(403).json({ message: "Bookings that have been started cannot be deleted" });
   await booking.destroy();
   return res.json({ message: "Successfully deleted" });
 });
