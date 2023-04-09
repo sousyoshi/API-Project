@@ -1,0 +1,14 @@
+.spotContainer{
+    display: flex;
+    border: 2px solid black;
+}
+
+
+.spotImage{
+    border: 2px dotted black;
+    border-radius: 20px;
+
+    gap: 20px;
+    width: 15rem;
+    height: 15rem;
+}

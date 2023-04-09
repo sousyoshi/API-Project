@@ -5,6 +5,8 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import SpotsLanding from "./components/SpotsLanding";
 
+export const API_KEY =" b148c2b9163431399f9e1dbc731a7e702c4ed0cb"
+
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
