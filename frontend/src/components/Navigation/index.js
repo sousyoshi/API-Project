@@ -10,7 +10,7 @@ function Navigation({ isLoaded }){
   return (
     <ul className='navbar'>
       <li >
-        <NavLink exact to="/"><img className="logo" src='https://lair-bnbs.herokuapp.com/images/lairbnb_logo.png'
+        <NavLink exact to="/"><img className="logo" 
         alt='logo'/></NavLink>
       </li>
       {isLoaded && (
