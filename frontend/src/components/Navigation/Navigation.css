@@ -1,0 +1,23 @@
+
+.navbar{
+   display: flex;
+ flex: auto;
+    list-style-type: none;
+    border: 2px solid grey;
+}
+ .logo{
+    display: flex;
+    justify-items: flex-start;
+    width: 7.5rem;
+
+
+ }
+
+ .profileButton{
+    display: flex;
+    position: absolute;
+    margin-right: 20px;
+    right: 0;
+    justify-items: flex-end;
+
+ }

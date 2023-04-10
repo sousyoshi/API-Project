@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
+import SpotsLanding from "./components/SpotsLanding";
+import SingleSpot from "./components/SingleSpot";
+
+
 
 function App() {
   const dispatch = useDispatch();
@@ -14,7 +18,12 @@ function App() {
   return (
     <>
       <Navigation isLoaded={isLoaded} />
-      {isLoaded && <Switch></Switch>}
+      {isLoaded && (
+        <Switch>
+          <Route exact path={"/"} component={SpotsLanding} />
+          <Route exact path={`/spots/:spotId`} component={SingleSpot} />
+        </Switch>
+      )}
     </>
   );
 }
