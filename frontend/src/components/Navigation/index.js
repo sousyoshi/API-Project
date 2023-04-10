@@ -8,12 +8,13 @@ function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
 
   return (
-    <ul>
-      <li>
-        <NavLink exact to="/">Home</NavLink>
+    <ul className='navbar'>
+      <li >
+        <NavLink exact to="/"><img className="logo" src='https://lair-bnbs.herokuapp.com/images/lairbnb_logo.png'
+        alt='logo'/></NavLink>
       </li>
       {isLoaded && (
-        <li>
+        <li className='profileButton'>
           <ProfileButton user={sessionUser} />
         </li>
       )}

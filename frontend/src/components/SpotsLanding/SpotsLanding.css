@@ -1,14 +1,32 @@
-.spotContainer{
-    display: flex;
-    border: 2px solid black;
+.spotContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  margin: 40px 40px;
+  gap: 20px;
+  height: 50px;
+  width: 100%;
+}
+.spotRating {
+  display: flex;
+  text-align: top;
+
+
 }
 
+.spotImage {
+  border-radius: 20px;
+  width: 20rem;
+  height: 17rem;
+  cursor: pointer;
+}
 
-.spotImage{
-    border: 2px dotted black;
-    border-radius: 20px;
+.spotDiv {
+  display: flexbox;
 
-    gap: 20px;
-    width: 15rem;
-    height: 15rem;
+  max-width: 100%;
+
+}
+
+.spotDetails{
+    font-weight: bold;
 }

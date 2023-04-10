@@ -4,8 +4,9 @@ import { Route, Switch } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import SpotsLanding from "./components/SpotsLanding";
+import SingleSpot from "./components/SingleSpot";
 
-export const API_KEY =" b148c2b9163431399f9e1dbc731a7e702c4ed0cb"
+
 
 function App() {
   const dispatch = useDispatch();
@@ -17,8 +18,12 @@ function App() {
   return (
     <>
       <Navigation isLoaded={isLoaded} />
-      {isLoaded && <Switch>
-        <Route exact path={"/"} component={SpotsLanding} /></Switch>}
+      {isLoaded && (
+        <Switch>
+          <Route exact path={"/"} component={SpotsLanding} />
+          <Route exact path={`/spots/:spotId`} component={SingleSpot} />
+        </Switch>
+      )}
     </>
   );
 }

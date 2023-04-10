@@ -1,14 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getSpotsThunk } from "../../store/spots";
 import { useEffect } from "react";
-import './SpotsLanding.css'
-
+import "./SpotsLanding.css";
+import { Link } from "react-router-dom";
 
 const SpotsLanding = () => {
   const dispatch = useDispatch();
   const spots = useSelector((state) => Object.values(state.spots.allSpots));
-  console.log(spots)
-
 
   useEffect(() => {
     dispatch(getSpotsThunk());
@@ -16,19 +14,22 @@ const SpotsLanding = () => {
 
   return (
     <section className="spotContainer">
+      {spots.map((spot) => {
+        return (
+          <div className="spotDiv" key={spot.id}>
+            <a href={`/spots/${spot.id}`}>
+              {" "}
+              <img className="spotImage" src={spot.previewImage} alt="img" />
+            </a>
 
-        {
-        spots.map((spot) => {
-          return (
-             <div key={spot.id}>
-                 <h2>{spot.name}</h2>
-                 <img className="spotImage" src={spot.previewImage} alt='img' />
-                 <p>{spot.city}, {spot.state}</p>
-                 <p>${(spot.price).toLocaleString("en-US")}</p>
-             </div>
-          )
-        })}
-
+            <p className="spotDetails">
+              {spot.city}, {spot.state}
+            </p>
+            <p className="spotRating">{spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</p>
+            <p>${spot.price.toLocaleString("en-US")} night</p>
+          </div>
+        );
+      })}
     </section>
   );
 };
