@@ -13,7 +13,7 @@ const SpotsLanding = () => {
   }, [dispatch]);
 
   return (
-    <section className="spotContainer">
+    <main className="spotContainer">
       {spots.map((spot) => {
         return (
           <div className="spotDiv" key={spot.id}>
@@ -30,7 +30,7 @@ const SpotsLanding = () => {
           </div>
         );
       })}
-    </section>
+    </main>
   );
 };
 
