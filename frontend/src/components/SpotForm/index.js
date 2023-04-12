@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { createSpotThunk, getSingleSpotThunk } from "../../store/spots";
+import { createSpotThunk } from "../../store/spots";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import "./SpotForm.css";
+
 
 const SpotForm = ({ spot, formType }) => {
   const dispatch = useDispatch();
@@ -17,18 +18,19 @@ const SpotForm = ({ spot, formType }) => {
   const [name, setName] = useState(spot?.name);
   const [price, setPrice] = useState(spot?.price);
   const [state, setState] = useState(spot?.state);
-  const [newUrl, setUrl] = useState({url: '', preview:true});
-
+  const [newUrl, setUrl] = useState({ url: "", preview: true });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newSpot = { ...spot, ownerId: user.id, country, lat: 88, lng: 150.595959, city, address, description, name, price, state };
 
-
-     dispatch(createSpotThunk(newSpot));
-
-     history.push(`/spots/${spot.id}`);
+    const newerSpot = await dispatch(createSpotThunk(newSpot, newUrl));
+    if (!newerSpot) return <h1>Loading....</h1>;
+    history.push(`/spots/${newerSpot.id}`);
   };
+  useEffect(() => {
+    console.log(newUrl, { country });
+  }, [newUrl, country]);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -37,19 +39,19 @@ const SpotForm = ({ spot, formType }) => {
       <p>Guests will only see your exact address once they booked a reservation.</p>
       <label>
         Country:
-        <input placeholder="Country" type="text" value={country} onChange={(e) => setCountry(e.target.value)} />
+        <input placeholder="Country" type="text" value={country || spot.country} onChange={(e) => setCountry(e.target.value)} />
       </label>
       <label>
         Street Address:
-        <input placeholder="Address" type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
+        <input placeholder="Address" type="text" value={address || spot.address} onChange={(e) => setAddress(e.target.value)} />
       </label>
       <label>
         City:
-        <input placeholder="City" type="text" value={city} onChange={(e) => setCity(e.target.value)} />
+        <input placeholder="City" type="text" value={city || spot.city} onChange={(e) => setCity(e.target.value)} />
       </label>
       <label>
         State:
-        <input placeholder="STATE" type="text" value={state} onChange={(e) => setState(e.target.value)} />
+        <input placeholder="STATE" type="text" value={state || spot.state} onChange={(e) => setState(e.target.value)} />
       </label>
       <h3>Describe your place to guests</h3>
       <p>
@@ -60,23 +62,28 @@ const SpotForm = ({ spot, formType }) => {
         <textarea
           placeholder="Please write at least 30 characters"
           type="text"
-          value={description}
+          value={description || spot.description}
           onChange={(e) => setDescription(e.target.value)}
         />
       </label>
       <h3>Create a title for your spot</h3>
       <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
       <label>
-        <input placeholder="Name of your spot" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+        <input placeholder="Name of your spot" type="text" value={name || spot.name} onChange={(e) => setName(e.target.value)} />
       </label>
       <h3>Set a base price for your spot</h3>
       <p>Competitve pricing can help your listing stand out and rank higher in search results</p>
       <label>
-        $ <input placeholder="Price per night (USD)" type="text" value={price} onChange={(e) => setPrice(e.target.value)} />
+        $ <input placeholder="Price per night (USD)" type="text" value={price || spot.price} onChange={(e) => setPrice(e.target.value)} />
       </label>
       <h3>Liven up your spot with photos</h3>
       <p>Submit a link to at least one photo to publish your spot.</p>
-      <input placeholder="Preview Image URL" type="text" value={newUrl.url} onChange={(e) => setUrl({...newUrl, url:e.target.value})} />
+      <input
+        placeholder="Preview Image URL"
+        type="text"
+        value={newUrl.url}
+        onChange={(e) => setUrl({ ...newUrl, url: e.target.value })}
+      />
       <button type="submit">{formType}</button>
     </form>
   );
