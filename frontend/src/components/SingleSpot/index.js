@@ -17,7 +17,8 @@ const SingleSpot = () => {
 
   useEffect(() => {
     dispatch(getSingleSpotThunk(spotId));
-   dispatch(getReviewsThunk(spotId));
+     dispatch(getReviewsThunk(spotId));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 

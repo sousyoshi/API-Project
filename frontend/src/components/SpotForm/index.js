@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { createSpotThunk } from "../../store/spots";
+import { createSpotThunk, editSpotThunk, getSingleSpotThunk } from "../../store/spots";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import "./SpotForm.css";
-
 
 const SpotForm = ({ spot, formType }) => {
   const dispatch = useDispatch();
@@ -24,9 +23,14 @@ const SpotForm = ({ spot, formType }) => {
     e.preventDefault();
     const newSpot = { ...spot, ownerId: user.id, country, lat: 88, lng: 150.595959, city, address, description, name, price, state };
 
-    const newerSpot = await dispatch(createSpotThunk(newSpot, newUrl));
-    if (!newerSpot) return <h1>Loading....</h1>;
-    history.push(`/spots/${newerSpot.id}`);
+    if (formType === "Create a new Spot") {
+      const newerSpot = await dispatch(createSpotThunk(newSpot, newUrl));
+      history.push(`/spots/${newerSpot.id}`);
+     };
+     if(formType === 'Update your spot') {
+      const newerSpot = await dispatch(editSpotThunk(newSpot));
+      history.push(`/spots/${newerSpot.id}`);
+    }
   };
   useEffect(() => {
     console.log(newUrl, { country });
@@ -74,7 +78,13 @@ const SpotForm = ({ spot, formType }) => {
       <h3>Set a base price for your spot</h3>
       <p>Competitve pricing can help your listing stand out and rank higher in search results</p>
       <label>
-        $ <input placeholder="Price per night (USD)" type="text" value={price || spot.price} onChange={(e) => setPrice(e.target.value)} />
+        ${" "}
+        <input
+          placeholder="Price per night (USD)"
+          type="text"
+          value={price || spot.price}
+          onChange={(e) => setPrice(e.target.value)}
+        />
       </label>
       <h3>Liven up your spot with photos</h3>
       <p>Submit a link to at least one photo to publish your spot.</p>

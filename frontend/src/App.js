@@ -7,6 +7,7 @@ import SpotsLanding from "./components/SpotsLanding";
 import SingleSpot from "./components/SingleSpot";
 import CreateSpotForm from "./components/SpotForm/CreateSpotForm";
 import EditSpotForm from "./components/SpotForm/EditSpotForm";
+import UserSpots from "./components/UserSpots";
 
 
 function App() {
@@ -22,8 +23,9 @@ function App() {
       {isLoaded && (
         <Switch>
           <Route exact path={"/"} component={SpotsLanding} />
-          <Route path={`/spots/new`} component={CreateSpotForm} />
-          <Route path={'/spots/:spotId/edit'} component={EditSpotForm} />
+          <Route exact path={`/spots/new`} component={CreateSpotForm} />
+          <Route exact path={'/spots/:spotId/edit'} component={EditSpotForm} />
+          <Route exact path={'/spots/current'} component={UserSpots} />
           <Route exact path={`/spots/:spotId`} component={SingleSpot} />
         </Switch>
       )}
