@@ -10,7 +10,7 @@ const EditSpotForm = () => {
   const data = useSelector((state) => (state.spots.singleSpot));
 //   const spotData = data.find((spot) => +spot.id === +spotId);
 
-  console.log('this is spotdata', data.address)
+  console.log('this is spotdata', data.id)
 
 
   useEffect(() => {
@@ -18,17 +18,17 @@ const EditSpotForm = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
-  const spot = {
-    country: data.country,
-    address: data.address,
-    city: data.city,
-    state:data.state,
-    description: data.description,
-    name: data.name,
-    price: data.price
+  const spot = {...data
+    // country: data.country,
+    // address: data.address,
+    // city: data.city,
+    // state:data.state,
+    // description: data.description,
+    // name: data.name,
+    // price: data.price
 
   }
-
+   console.log(spot)
   return <SpotForm spot={spot} formType="Update your spot" />;
 };
 export default EditSpotForm;

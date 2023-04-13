@@ -1,26 +1,25 @@
 main {
   display: flex;
   flex-flow: row;
-  justify-content: space-around;
+  justify-content: space-between;
   max-width: 100%;
   justify-items: center;
   margin: 30px 20px;
   align-items: center;
 
 }
-body{
 
-
-}
 
 .spotContainer {
-  display: flex;
-  box-sizing: content-box;
-  justify-content: space-evenly;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-flow: row;
+  box-sizing: border-box;
+  justify-content: space-around;
   border: 2px solid black;
-  width: 100%;
+  max-width: 100%;
   margin: 10px;
-  flex-wrap: wrap;
+
 }
 
 .spotPrice{
@@ -30,12 +29,12 @@ font-size: 14pt;
 .spotRating {
   position: relative;
  text-align: right;
- bottom: 30px;;
+ bottom: 45px;;
 
 }
 
 .spotImage {
-
+ border-radius: 10px;
   height: 400px;
   width: 400px;
   cursor: pointer;
@@ -43,8 +42,11 @@ font-size: 14pt;
 
 .spotDiv {
   display: flexbox;
- border: 2px solid red;
-  
+ border: 2px solid black;
+ margin: 0;
+ padding: 0;
+
+
 }
 
 .spotDetails {

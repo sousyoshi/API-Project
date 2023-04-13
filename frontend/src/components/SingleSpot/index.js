@@ -27,7 +27,7 @@ const SingleSpot = () => {
   };
 
 
- if(!spot || !reviews) return (<h1>Loading...</h1>);
+
 
   return (
     <main className="main">
@@ -36,16 +36,16 @@ const SingleSpot = () => {
           {spot.city}, {spot.state} {spot.country}
         </p>
       <ul className="spotImageArray">
-        {spot.SpotImages.map((spot) => {
+        { spot.SpotImages?.map((spot) => {
           return (
             <li  key={spot.id}>
-              <img className="image" alt="img" src={spot.url} />
+              <img className="image" alt="img" src={spot?.url} />
             </li>
           );
         })}
       </ul>
       <h2>
-        Hosted by {spot.Owner.firstName} {spot.Owner.lastName}
+        Hosted by {spot.Owner?.firstName} {spot.Owner?.lastName}
       </h2>
       <p>{spot.description}</p>
       <section className="calloutBox">

@@ -1,21 +1,22 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { deleteSpotThunk, getSpotsThunk } from "../../store/spots";
 
 const UserSpots = () => {
   const dispatch = useDispatch();
-  const history = useHistory()
   const sessionUser = useSelector((state) => state.session.user);
   const spots = useSelector((state) => Object.values(state.spots.allSpots));
   const userSpot = spots.filter((spot) => spot.ownerId === sessionUser.id);
-if (!userSpot || !sessionUser) ( history.push('/'));
 
   useEffect(() => {
     dispatch(getSpotsThunk());
 
   }, [dispatch]);
 
+
+
+  if (!userSpot) return ( <h1>Loading...</h1>);
 
 
   return (

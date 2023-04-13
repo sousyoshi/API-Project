@@ -51,3 +51,11 @@
    font-size: 14pt;
    border-radius: 15px;
 }
+
+.profile-dropdown > li{
+   display: flex;
+   font-size: 14pt;
+   padding-right: 20px;
+   text-align: left;
+
+}
