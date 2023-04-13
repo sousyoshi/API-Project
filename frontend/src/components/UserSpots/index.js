@@ -16,7 +16,7 @@ const UserSpots = () => {
 
 
 
-  if (!userSpot) return ( <h1>Loading...</h1>);
+  if (!userSpot || !sessionUser) return ( <h1>Loading...</h1>);
 
 
   return (

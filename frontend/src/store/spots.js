@@ -27,7 +27,7 @@ export const editSpotThunk = (spot) => async (dispatch) => {
   });
   if (res.ok) {
     const spot = await res.json();
-    
+
     const newSpot = await dispatch(editSpot(spot));
 
     return newSpot;
@@ -105,7 +105,7 @@ const spotsReducer = (state = initialState, action) => {
     }
 
     case CREATE_IMAGE:
-      const newState = { ...state, singleSpot: { SpotImages: [], Owner: {} } };
+      const newState = { ...state, singleSpot: { SpotImages: [...state.SpotImages], Owner: {} } };
       newState.singleSpot.SpotImages.push(action.image);
       return newState;
 

@@ -77,16 +77,18 @@ const SpotForm = ({ spot, formType }) => {
       <label>
         $ <input placeholder="Price per night (USD)" type="text" value={price} onChange={(e) => setPrice(e.target.value)} />
       </label>
-     {formType === 'Create a new Spot' ? <div>
-        <h3>Liven up your spot with photos</h3>
-        <p>Submit a link to at least one photo to publish your spot.</p>
-        <input
-          placeholder="Preview Image URL"
-          type="text"
-          value={newUrl.url}
-          onChange={(e) => setUrl({ ...newUrl, url: e.target.value })}
-        />
-      </div> : null}
+      {formType === "Create a new Spot" ? (
+        <div>
+          <h3>Liven up your spot with photos</h3>
+          <p>Submit a link to at least one photo to publish your spot.</p>
+          <input
+            placeholder="Preview Image URL"
+            type="text"
+            value={newUrl.url}
+            onChange={(e) => setUrl({ ...newUrl, url: e.target.value })}
+          />
+        </div>
+      ) : null}
 
       <button type="submit">{formType}</button>
     </form>

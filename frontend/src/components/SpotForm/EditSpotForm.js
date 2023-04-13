@@ -28,7 +28,7 @@ const EditSpotForm = () => {
     // price: data.price
 
   }
-   console.log(spot)
+   
   return <SpotForm spot={spot} formType="Update your spot" />;
 };
 export default EditSpotForm;

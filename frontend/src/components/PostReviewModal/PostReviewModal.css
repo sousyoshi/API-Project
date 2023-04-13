@@ -1,0 +1,5 @@
+.rating-input{display: flex;}
+
+.filled :hover{
+    color: yellow
+}
