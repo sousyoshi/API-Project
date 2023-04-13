@@ -23,10 +23,10 @@ function App() {
       {isLoaded && (
         <Switch>
           <Route exact path={"/"} component={SpotsLanding} />
-          <Route exact path={`/spots/new`} component={CreateSpotForm} />
-          <Route exact path={'/spots/:spotId/edit'} component={EditSpotForm} />
+          <Route path={`/spots/new`} component={CreateSpotForm} />
           <Route exact path={'/spots/current'} component={UserSpots} />
           <Route exact path={`/spots/:spotId`} component={SingleSpot} />
+          <Route  path={'/spots/:spotId/edit'} component={EditSpotForm} />
         </Switch>
       )}
     </>

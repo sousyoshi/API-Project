@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { createSpotThunk, editSpotThunk, getSingleSpotThunk } from "../../store/spots";
+import { createSpotThunk, editSpotThunk, getSingleSpot,} from "../../store/spots";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import "./SpotForm.css";
@@ -19,6 +19,8 @@ const SpotForm = ({ spot, formType }) => {
   const [state, setState] = useState(spot?.state);
   const [newUrl, setUrl] = useState({ url: "", preview: true });
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newSpot = { ...spot, ownerId: user.id, country, lat: 88, lng: 150.595959, city, address, description, name, price, state };
@@ -28,20 +30,17 @@ const SpotForm = ({ spot, formType }) => {
       history.push(`/spots/${newerSpot.id}`);
      };
      if(formType === 'Update your spot') {
-      const newerSpot = await dispatch(editSpotThunk(newSpot));
+      const newerSpot = await dispatch(editSpotThunk(newSpot, newUrl));
       history.push(`/spots/${newerSpot.id}`);
     }
   };
-  useEffect(() => {
-    console.log(newUrl, { country });
-  }, [newUrl, country]);
 
   return (
     <form onSubmit={handleSubmit}>
       <h2>{formType}</h2>
       <h3>Where's your place located?</h3>
       <p>Guests will only see your exact address once they booked a reservation.</p>
-      <label>
+      <label className="countryLabel">
         Country:
         <input placeholder="Country" type="text" value={country || spot.country} onChange={(e) => setCountry(e.target.value)} />
       </label>

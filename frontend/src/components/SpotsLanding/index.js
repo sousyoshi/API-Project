@@ -19,14 +19,14 @@ const SpotsLanding = () => {
           <div className="spotDiv" key={spot.id}>
             <a href={`/spots/${spot.id}`}>
               {" "}
-              <img className="spotImage" src={spot.previewImage} alt="img" />
+              <img className="spotImage" src={spot.previewImage} alt="img" title={spot.name} />
             </a>
 
             <p className="spotDetails">
               {spot.city}, {spot.state}
             </p>
-            <p className="spotRating">{spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</p>
-            <p>${spot.price.toLocaleString("en-US")} night</p>
+            <p className="spotRating"><i class="fa-solid fa-star"></i>{spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</p>
+            <p className="spotPrice">${spot.price.toLocaleString("en-US")} night</p>
           </div>
         );
       })}
