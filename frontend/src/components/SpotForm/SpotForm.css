@@ -1,0 +1,41 @@
+body {
+  margin: 20px;
+  max-width: 100%;
+}
+
+form {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+
+}
+
+input {
+display: flex;
+  font-size: 14pt;
+  background-color: #e8f0fe;
+  width: 100%;
+
+
+
+}
+
+h2 {
+  font-weight: bold;
+  font-size: 24pt;
+}
+
+h3 {
+  font-size: 18pt;
+  font-weight: bold;
+}
+
+p {
+  font-size: 14pt;
+}
+
+button {
+  font-size: 14pt;
+  cursor: pointer;
+}
+
