@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import OpenModalButton from "../OpenModalButton";
 import "./SingleSpot.css";
 import PostReviewModal from "../PostReviewModal";
+import DeleteReviewModal from "../DeleteReviewModal";
 
 const SingleSpot = () => {
   const dispatch = useDispatch();
@@ -67,7 +68,7 @@ console.log(reviewArr , userOwnedSpot)
         {reviewVal?.map((review) => {
           return (
             <li key={review.id}>
-              {review.User?.firstName}, {review.createdAt}, {review.review}
+              {review.User?.firstName}, {review.createdAt}, {review.review} { sessionUser.id === review.User.id && <OpenModalButton buttonText={'Delete'} modalComponent={<DeleteReviewModal spot={spot}/>}/>}
             </li>
           );
         })}
