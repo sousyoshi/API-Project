@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { deleteSpotThunk, getSpotsThunk } from "../../store/spots";
+import OpenModalButton from "../OpenModalButton";
+import DeleteSpotModal from "../DeleteSpotModal";
 
 const UserSpots = () => {
   const dispatch = useDispatch();
@@ -11,13 +13,9 @@ const UserSpots = () => {
 
   useEffect(() => {
     dispatch(getSpotsThunk());
-
   }, [dispatch]);
 
-
-
-  if (!userSpot || !sessionUser) return ( <h1>Loading...</h1>);
-
+  if (!userSpot || !sessionUser) return <h1>Loading...</h1>;
 
   return (
     <>
@@ -29,7 +27,11 @@ const UserSpots = () => {
         {userSpot.map((spot) => {
           return (
             <li key={spot.id}>
-              <img alt="img" src={spot.previewImage}></img>
+              <a href={`/spots/${spot.id}`}>
+                {" "}
+                <img alt="img" src={spot.previewImage} title={spot.name}></img>
+              </a>
+
               <p>
                 {spot.city}, {spot.state}
               </p>
@@ -38,8 +40,8 @@ const UserSpots = () => {
               <Link to={`/spots/${spot.id}/edit`}>
                 <button>Update</button>
               </Link>
-
-              <button onClick={async()=>dispatch(deleteSpotThunk(spot.id))}>Delete</button>
+                
+              <OpenModalButton buttonText={'Delete'} modalComponent={<DeleteSpotModal spot={spot}/>}/>
             </li>
           );
         })}

@@ -14,14 +14,14 @@ const SingleSpot = () => {
   const reviews = useSelector((state) => Object.values(state.reviews)[0]);
   const reviewVal = Object.values(reviews);
   const sessionUser = useSelector((state) => state.session.user);
-  console.log("this is the owner", sessionUser.id === spot.Owner.id);
+
   console.log(reviewVal);
 
   const reviewArr = reviewVal.filter((review) => {
-     return review.userId === sessionUser.id
+     return review?.userId === sessionUser?.id
   });
 
- const userOwnedSpot = sessionUser.id === spot.Owner.id
+ const userOwnedSpot = sessionUser?.id === spot.Owner.id
 console.log(reviewArr , userOwnedSpot)
 
   useEffect(() => {
@@ -34,6 +34,7 @@ console.log(reviewArr , userOwnedSpot)
   const comingSoon = () => {
     alert("Feature coming soon.");
   };
+  if(!spot || !reviews) return <h1>Loading...</h1>
 
   return (
     <main className="main">
@@ -72,7 +73,7 @@ console.log(reviewArr , userOwnedSpot)
         })}
       </ul>
       { !!sessionUser && !reviewArr.length && !userOwnedSpot &&
-        <div> <OpenModalButton buttonText={"Post your Review"} modalComponent={PostReviewModal}/></div>}
+        <div> <OpenModalButton buttonText={"Post your Review"} modalComponent={<PostReviewModal spot={spot}/>}/></div>}
     </main>
   );
 };
