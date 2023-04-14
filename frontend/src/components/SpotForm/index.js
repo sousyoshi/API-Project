@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createSpotThunk, editSpotThunk, getSingleSpot } from "../../store/spots";
+import { createSpotThunk, editSpotThunk } from "../../store/spots";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import "./SpotForm.css";
@@ -29,8 +29,8 @@ const SpotForm = ({ spot, formType }) => {
       history.push(`/spots/${spot.id}`);
     } else {
       const newerSpot = await dispatch(createSpotThunk(newSpot, newUrl));
-      console.log(newerSpot);
-      history.push(`/spots/${newerSpot.id}`);
+    const newNew = newerSpot
+      history.push(`/spots/${newNew.id}`);
     }
   };
   return (

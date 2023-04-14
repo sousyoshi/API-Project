@@ -21,7 +21,7 @@ const SingleSpot = () => {
      return review?.userId === sessionUser?.id
   });
 
- const userOwnedSpot = sessionUser?.id === spot.Owner.id
+ const userOwnedSpot = sessionUser?.id === spot.Owner?.id
 console.log(reviewArr , userOwnedSpot)
 
   useEffect(() => {
@@ -64,16 +64,16 @@ console.log(reviewArr , userOwnedSpot)
         </button>
       </section>
       <ul>
-        {reviewVal.map((review) => {
+        {reviewVal?.map((review) => {
           return (
             <li key={review.id}>
-              {review.User.firstName}, {review.createdAt}, {review.review}
+              {review.User?.firstName}, {review.createdAt}, {review.review}
             </li>
           );
         })}
       </ul>
       { !!sessionUser && !reviewArr.length && !userOwnedSpot &&
-        <div> <OpenModalButton buttonText={"Post your Review"} modalComponent={<PostReviewModal spot={spot}/>}/></div>}
+        <div> <OpenModalButton buttonText={"Post your Review"} modalComponent={<PostReviewModal spot={spot} disabled={false}/>}/></div>}
     </main>
   );
 };
