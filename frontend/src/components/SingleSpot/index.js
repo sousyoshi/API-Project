@@ -3,7 +3,10 @@ import { getSingleSpotThunk } from "../../store/spots";
 import { getReviewsThunk } from "../../store/reviews";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import OpenModalButton from "../OpenModalButton";
 import "./SingleSpot.css";
+import PostReviewModal from "../PostReviewModal";
+import DeleteReviewModal from "../DeleteReviewModal";
 
 const SingleSpot = () => {
   const dispatch = useDispatch();
@@ -11,13 +14,20 @@ const SingleSpot = () => {
   const spot = useSelector((state) => Object.values(state.spots)[1]);
   const reviews = useSelector((state) => Object.values(state.reviews)[0]);
   const reviewVal = Object.values(reviews);
-  // const sessionUser = useSelector(state => state.session.user);
-  // console.log('this is the user', sessionUser.id === spot.Owner.id)
+  const sessionUser = useSelector((state) => state.session.user);
 
+  console.log(reviewVal);
+
+  const reviewArr = reviewVal.filter((review) => {
+     return review?.userId === sessionUser?.id
+  });
+
+ const userOwnedSpot = sessionUser?.id === spot.Owner?.id
+console.log(reviewArr , userOwnedSpot)
 
   useEffect(() => {
     dispatch(getSingleSpotThunk(spotId));
-     dispatch(getReviewsThunk(spotId));
+    dispatch(getReviewsThunk(spotId));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
@@ -25,20 +35,18 @@ const SingleSpot = () => {
   const comingSoon = () => {
     alert("Feature coming soon.");
   };
-
-
-
+  if(!spot || !reviews) return <h1>Loading...</h1>
 
   return (
     <main className="main">
       <h2>{spot.name}</h2>
-        <p>
-          {spot.city}, {spot.state} {spot.country}
-        </p>
+      <p>
+        {spot.city}, {spot.state} {spot.country}
+      </p>
       <ul className="spotImageArray">
-        { spot.SpotImages?.map((spot) => {
+        {spot.SpotImages?.map((spot) => {
           return (
-            <li  key={spot.id}>
+            <li key={spot.id}>
               <img className="image" alt="img" src={spot?.url} />
             </li>
           );
@@ -56,12 +64,17 @@ const SingleSpot = () => {
           Reserve
         </button>
       </section>
-<ul>
-  {reviewVal.map((review) => {
-        return <li key={review.id}>{review.User.firstName},  {(review.createdAt)}, {review.review}</li>;
-      })}
-</ul>
-
+      <ul>
+        {reviewVal?.map((review) => {
+          return (
+            <li key={review.id}>
+              {review.User?.firstName}, {review.createdAt}, {review.review} { sessionUser.id === review.User.id && <OpenModalButton buttonText={'Delete'} modalComponent={<DeleteReviewModal spot={spot}/>}/>}
+            </li>
+          );
+        })}
+      </ul>
+      { !!sessionUser && !reviewArr.length && !userOwnedSpot &&
+        <div> <OpenModalButton buttonText={"Post your Review"} modalComponent={<PostReviewModal spot={spot} disabled={false}/>}/></div>}
     </main>
   );
 };

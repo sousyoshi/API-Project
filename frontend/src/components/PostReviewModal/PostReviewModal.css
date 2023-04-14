@@ -1,0 +1,16 @@
+.rating{display: flex;}
+
+.rating .filled    {
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    outline: black;
+}
+
+.filled{
+    color: rgba(255, 255, 0, 0.448);
+}
+
+.empty{
+    color: black;
+}

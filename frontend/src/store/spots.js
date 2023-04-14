@@ -13,7 +13,6 @@ export const deleteSpotThunk = (spotId) => async (dispatch) => {
     method: "DELETE",
   });
   if (res.ok) {
-
     dispatch(deleteSpot(spotId));
   }
 };
@@ -27,7 +26,7 @@ export const editSpotThunk = (spot) => async (dispatch) => {
   });
   if (res.ok) {
     const spot = await res.json();
-    
+
     const newSpot = await dispatch(editSpot(spot));
 
     return newSpot;
@@ -49,8 +48,9 @@ export const getSingleSpotThunk = (spotId) => async (dispatch) => {
 
   if (res.ok) {
     const spot = await res.json();
-    console.log("this is spot", spot);
-    dispatch(getSingleSpot(spot));
+    const spotData = spot;
+    await dispatch(getSingleSpot(spotData));
+    return spotData;
   }
 };
 
@@ -110,8 +110,8 @@ const spotsReducer = (state = initialState, action) => {
       return newState;
 
     case DELETE_SPOT: {
-      const newState = { ...state, allSpots: {...state.allSpots }, singleSpot: { SpotImages: [], Owner: {} } };
-      delete newState.allSpots[action.spotId]
+      const newState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { SpotImages: [], Owner: {} } };
+      delete newState.allSpots[action.spotId];
       return newState;
     }
     default:
