@@ -7,24 +7,30 @@ import "./PostReviewModal.css";
 
 const PostReviewModal = ({ spot }) => {
   const dispatch = useDispatch();
+
+  const sessionReviews = useSelector((state)=> state)
+  console.log('this is state', sessionReviews)
+
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const sessionUser = useSelector((state) => state.session.user);
-  const {closeModal} = useModal()
+  const { closeModal } = useModal();
   console.log(sessionUser.id, spot.id);
 
   useEffect(() => {
     setRating(rating);
-  }, [rating]);
-  const newReview = { user: sessionUser, spotId: spot.id, review, rating };
-  console.log(newReview);
+    setReview(review)
+  }, [rating, review]);
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    await dispatch(createReviewThunk(newReview)).then(closeModal).then(dispatch(getSingleSpotThunk(spot.id)))
-
+const newReview = { user: sessionUser, spotId: spot.id, review, rating };
+    await dispatch(createReviewThunk(newReview))
+      .then(() => dispatch(getSingleSpotThunk(spot.id)))
+      .then(() => closeModal());
   };
 
   const starRating = () => {

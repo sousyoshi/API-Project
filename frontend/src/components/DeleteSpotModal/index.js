@@ -10,17 +10,17 @@ const DeleteSpotModal = ({ spot }) => {
    const {closeModal} = useModal()
 
   const deleteSpot = async() => {
-     return dispatch(deleteSpotThunk(spot.id)).then(closeModal)
+     await dispatch(deleteSpotThunk(spot.id)).then(()=>closeModal())
   };
 
   return (
     <>
-      <section>
+      <form>
         <h1>Confirm Delete</h1>
         <p>Are you sure you want to remove this spot from the listings?</p>
         <button onClick={deleteSpot}>Yes (Delete Spot)</button>
         <button onClick={closeModal}>No (Keep Spot)</button>
-      </section>
+      </form>
     </>
   );
 };

@@ -15,8 +15,8 @@ const SingleSpot = () => {
   const reviews = useSelector((state) => Object.values(state.reviews)[0]);
   const reviewVal = Object.values(reviews);
   const sessionUser = useSelector((state) => state.session.user);
+console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", spot)
 
-  console.log(reviewVal);
 
   const reviewArr = reviewVal.filter((review) => {
      return review?.userId === sessionUser?.id
@@ -29,8 +29,9 @@ console.log(reviewArr , userOwnedSpot)
     dispatch(getSingleSpotThunk(spotId));
     dispatch(getReviewsThunk(spotId));
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+
+
+  }, [dispatch, spotId]);
 
   const comingSoon = () => {
     alert("Feature coming soon.");
@@ -68,13 +69,13 @@ console.log(reviewArr , userOwnedSpot)
         { reviewVal.map((review) => {
           return (
             <li key={review?.id}>
-              {review.User.firstName}, {review.createdAt}, {review.review} {sessionUser && sessionUser?.id === review.User.id && <OpenModalButton buttonText={'Delete'} modalComponent={<DeleteReviewModal reviewVal={reviewVal} sessionUser={sessionUser}/>}/>}
+              {review.User.firstName}, {review.createdAt}, {review.review} {sessionUser && sessionUser?.id === review.User.id && <OpenModalButton buttonText={'Delete'} modalComponent={<DeleteReviewModal reviewVal={reviewVal} spotId={spotId}/>}/>}
             </li>
           );
         })}
       </ul>
       { !!sessionUser && !reviewArr.length && !userOwnedSpot &&
-        <div> <OpenModalButton buttonText={"Post your Review"} modalComponent={<PostReviewModal spot={spot} disabled={false}/>}/></div>}
+        <div> <OpenModalButton buttonText={"Post your Review"} modalComponent={<PostReviewModal spot={spot}/>}/></div>}
     </main>
   );
 };

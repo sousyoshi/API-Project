@@ -13,7 +13,7 @@ export const deleteSpotThunk = (spotId) => async (dispatch) => {
     method: "DELETE",
   });
   if (res.ok) {
-    dispatch(deleteSpot(spotId));
+   return dispatch(deleteSpot(spotId));
   }
 };
 
@@ -39,7 +39,8 @@ export const getSpotsThunk = () => async (dispatch) => {
   if (res.ok) {
     const spots = await res.json();
 
-    dispatch(getSpots(spots));
+    await dispatch(getSpots(spots));
+    return spots;
   }
 };
 export const getSingleSpot = (spot) => ({ type: SINGLE_SPOT, spot });
@@ -48,8 +49,8 @@ export const getSingleSpotThunk = (spotId) => async (dispatch) => {
 
   if (res.ok) {
     const spot = await res.json();
-    const spotData = spot;
-    await dispatch(getSingleSpot(spotData));
+    const spotData = await dispatch(getSingleSpot(spot)) ;
+
     return spotData;
   }
 };
@@ -89,7 +90,7 @@ const spotsReducer = (state = initialState, action) => {
       return newState;
     }
     case SINGLE_SPOT: {
-      const newState = { ...state };
+      const newState = { ...state, singleSpot:{...state.singleSpot} };
       newState.singleSpot = action.spot;
       return newState;
     }
@@ -99,7 +100,7 @@ const spotsReducer = (state = initialState, action) => {
       return newState;
     }
     case CREATE_SPOT: {
-      const newState = { ...state, singleSpot: { SpotImages: [], Owner: {} } };
+      const newState = { ...state, allSpots:{...state.allSpots}, singleSpot: { SpotImages: [], Owner: {} } };
       newState.allSpots[action.spot.id] = action.spot;
       return newState;
     }
