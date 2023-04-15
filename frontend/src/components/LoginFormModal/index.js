@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
@@ -24,36 +24,32 @@ function LoginFormModal() {
       });
   };
 
+  const demoUser = () =>{
+    return dispatch(sessionActions.login({credential: "DemoUser", password: "password"})).then(closeModal)
+  }
+
   return (
-    <> <div className="loginDiv">
-      <h1>Log In</h1>
-      <form className="loginForm"  onSubmit={handleSubmit}>
-        <label>
-          Username or Email
-          <input
-            type="text"
+    <>
+      {" "}
+      <div className="loginDiv">
+        <h1>Log In</h1>
+        <form className="loginForm" onSubmit={handleSubmit}>
+          <label>
+            Username or Email
+            <input type="text" value={credential} onChange={(e) => setCredential(e.target.value)} required />
+          </label>
 
-            value={credential}
-            onChange={(e) => setCredential(e.target.value)}
-            required
-          />
-        </label>
+          <label>
+            Password
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          </label>
+          {errors.credential && <p className="errors">{errors.credential}</p>}
+          <button type="submit" disabled={(credential.length < 4) ||(password.length < 6)}>
+            Log In
+          </button>
 
-
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        {errors.credential && (
-          <p>{errors.credential}</p>
-        )}
-        <button type="submit">Log In</button>
-      </form></div>
+        </form>  <button onClick={demoUser}>Demo User</button  >
+      </div>
     </>
   );
 }

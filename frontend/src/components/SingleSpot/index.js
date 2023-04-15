@@ -15,28 +15,24 @@ const SingleSpot = () => {
   const reviews = useSelector((state) => Object.values(state.reviews)[0]);
   const reviewVal = Object.values(reviews);
   const sessionUser = useSelector((state) => state.session.user);
-console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", spot)
-
+  console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", spot);
 
   const reviewArr = reviewVal.filter((review) => {
-     return review?.userId === sessionUser?.id
+    return review?.userId === sessionUser?.id;
   });
 
- const userOwnedSpot = sessionUser?.id === spot.Owner?.id
-console.log(reviewArr , userOwnedSpot)
+  const userOwnedSpot = sessionUser?.id === spot.Owner?.id;
+  console.log(reviewArr, userOwnedSpot);
 
   useEffect(() => {
     dispatch(getSingleSpotThunk(spotId));
     dispatch(getReviewsThunk(spotId));
-
-
-
   }, [dispatch, spotId]);
 
   const comingSoon = () => {
     alert("Feature coming soon.");
   };
-  if(!spot || !reviews) return <h1>Loading...</h1>
+  if (!spot || !reviews) return <h1>Loading...</h1>;
 
   return (
     <main className="main">
@@ -59,23 +55,34 @@ console.log(reviewArr , userOwnedSpot)
       <p>{spot.description}</p>
       <section className="calloutBox">
         <h3>${spot.price?.toLocaleString("en-US")} night </h3>
-        <p>{spot.avgStarRating?.toFixed(2)}</p>
+        <p>{spot.avgStarRating?.toFixed(2)} </p>
+        <p> &#x2022;</p>
         <p>{spot.numReviews > 1 ? `${spot.numReviews} reviews` : `${spot.numReviews} review`}</p>
         <button onClick={comingSoon} className="reserve">
           Reserve
         </button>
       </section>
+      <div>
+        <h2>{spot.avgStarRating?.toFixed(2)} </h2> <h2>&#x2022;</h2><h2>{spot.numReviews > 1 ? `${spot.numReviews} reviews` : `${spot.numReviews} review`}</h2>
+      </div>
       <ul>
-        { reviewVal.map((review) => {
+        {reviewVal.map((review) => {
           return (
             <li key={review?.id}>
-              {review.User.firstName}, {review.createdAt}, {review.review} {sessionUser && sessionUser?.id === review.User.id && <OpenModalButton buttonText={'Delete'} modalComponent={<DeleteReviewModal reviewVal={reviewVal} spotId={spotId}/>}/>}
+              {review.User.firstName}, {new Date(review.createdAt.slice(0,10)).toLocaleDateString('en-US',{month:'long', year:'numeric'})}, {review.review}{" "}
+              {sessionUser && sessionUser?.id === review.User.id && (
+                <OpenModalButton buttonText={"Delete"} modalComponent={<DeleteReviewModal reviewVal={reviewVal} spotId={spotId} />} />
+              )}
             </li>
           );
         })}
       </ul>
-      { !!sessionUser && !reviewArr.length && !userOwnedSpot &&
-        <div> <OpenModalButton buttonText={"Post your Review"} modalComponent={<PostReviewModal spot={spot}/>}/></div>}
+      {!!sessionUser && !reviewArr.length && !userOwnedSpot && (
+        <div>
+          {" "}
+          <OpenModalButton buttonText={"Post your Review"} modalComponent={<PostReviewModal spot={spot} />} />
+        </div>
+      )}
     </main>
   );
 };
