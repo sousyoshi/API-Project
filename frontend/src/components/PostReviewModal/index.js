@@ -1,4 +1,4 @@
-import { createReviewThunk, getReviewsThunk } from "../../store/reviews";
+import { createReviewThunk } from "../../store/reviews";
 import { getSpotsThunk, getSingleSpot, getSingleSpotThunk } from "../../store/spots";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,8 +23,8 @@ const PostReviewModal = ({ spot }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await dispatch(createReviewThunk(newReview)).then(closeModal)
-    return dispatch(getSingleSpotThunk(spot.id));
+    await dispatch(createReviewThunk(newReview)).then(closeModal).then(dispatch(getSingleSpotThunk(spot.id)))
+
   };
 
   const starRating = () => {

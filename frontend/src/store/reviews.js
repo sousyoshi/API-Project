@@ -11,6 +11,7 @@ export const deleteReviewThunk = (reviewId) => async (dispatch) => {
   })
   if(res.ok){
     dispatch(deleteReview(reviewId))
+    return reviewId
   }
 };
 

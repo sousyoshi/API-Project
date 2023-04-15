@@ -1,14 +1,17 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteReviewThunk } from "../../store/reviews";
 import { useModal } from "../../context/Modal";
 
 
-const DeleteReviewModal = ({ spot }) => {
+const DeleteReviewModal = ({ reviewVal }) => {
     const dispatch = useDispatch()
+    const user = useSelector(state=>state.session.user)
    const {closeModal} = useModal()
-
+   console.log('these right hreere',user.id)
+const reviewId = reviewVal.find(review => review.userId === user.id)
+console.log('theseseeeeeeeee', reviewId.id)
   const deleteSpot = async() => {
-     return dispatch(deleteReviewThunk(spot.id)).then(closeModal)
+     await dispatch(deleteReviewThunk(reviewId.id)).then(closeModal)
   };
 
   return (
