@@ -65,10 +65,10 @@ console.log(reviewArr , userOwnedSpot)
         </button>
       </section>
       <ul>
-        {reviewVal?.map((review) => {
+        { reviewVal.map((review) => {
           return (
-            <li key={review.id}>
-              {review.User?.firstName}, {review.createdAt}, {review.review} { sessionUser.id === review.User.id && <OpenModalButton buttonText={'Delete'} modalComponent={<DeleteReviewModal spot={spot}/>}/>}
+            <li key={review?.id}>
+              {review.User.firstName}, {review.createdAt}, {review.review} {sessionUser && sessionUser?.id === review.User.id && <OpenModalButton buttonText={'Delete'} modalComponent={<DeleteReviewModal reviewVal={reviewVal} sessionUser={sessionUser}/>}/>}
             </li>
           );
         })}
