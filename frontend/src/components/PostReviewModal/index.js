@@ -20,7 +20,9 @@ const PostReviewModal = ({ spot }) => {
 
   useEffect(() => {
     setRating(rating);
-    setReview(review)
+    setReview(review);
+
+
   }, [rating, review]);
 
 
@@ -64,7 +66,7 @@ const newReview = { user: sessionUser, spotId: spot.id, review, rating };
         <div className="rating-input"></div>
         {starRating()}
         <p>Stars</p>
-        <button type="submit">Submit Your Review</button>
+        <button type="submit" disabled={!review || !rating}>Submit Your Review</button>
       </form>
     </>
   );
