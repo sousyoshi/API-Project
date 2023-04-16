@@ -16,3 +16,7 @@ label{
 #modal-content button{
 width: 50%;
 }
+
+.errors{
+    color: red;
+}

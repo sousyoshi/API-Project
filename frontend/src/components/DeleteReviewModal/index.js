@@ -15,6 +15,7 @@ const DeleteReviewModal = ({ reviewVal, spotId }) => {
 
 const reviewId = reviewVal.find(review => review.userId === user.id)
 console.log('theseseeeeeeeee', reviewId)
+
   const deleteSpot = async() => {
      await dispatch(deleteReviewThunk(reviewId.id))
      await dispatch(getReviewsThunk(spotId))
@@ -24,10 +25,10 @@ console.log('theseseeeeeeeee', reviewId)
 
   return (
     <>
-      <form>
+      <form onSubmit={deleteSpot}>
         <h1>Confirm Delete</h1>
         <p>Are you sure you want to delete this review?</p>
-        <button type='submit' onClick={deleteSpot}>Yes (Delete Review)</button>
+        <button type='submit'>Yes (Delete Review)</button>
         <button onClick={closeModal}>No (Keep Review)</button>
       </form>
     </>
