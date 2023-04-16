@@ -24,9 +24,9 @@ function LoginFormModal() {
       });
   };
 
-  const demoUser = () =>{
-    return dispatch(sessionActions.login({credential: "DemoUser", password: "password"})).then(closeModal)
-  }
+  const demoUser = () => {
+    return dispatch(sessionActions.login({ credential: "DemoUser", password: "password" })).then(closeModal);
+  };
 
   return (
     <>
@@ -35,20 +35,24 @@ function LoginFormModal() {
         <h1>Log In</h1>
         <form className="loginForm" onSubmit={handleSubmit}>
           <label>
-            Username or Email
-            <input type="text" value={credential} onChange={(e) => setCredential(e.target.value)} required />
+            <input
+              placeholder="Username or Email"
+              type="text"
+              value={credential}
+              onChange={(e) => setCredential(e.target.value)}
+              required
+            />
           </label>
 
           <label>
-            Password
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           </label>
           {errors.credential && <p className="errors">{errors.credential}</p>}
-          <button type="submit" disabled={(credential.length < 4) ||(password.length < 6)}>
+          <button className="loginButton" type="submit" disabled={credential.length < 4 || password.length < 6}>
             Log In
           </button>
-
-        </form>  <button onClick={demoUser}>Demo User</button  >
+        <button className='demoUser' onClick={demoUser}>Demo User</button>
+        </form>{" "}
       </div>
     </>
   );

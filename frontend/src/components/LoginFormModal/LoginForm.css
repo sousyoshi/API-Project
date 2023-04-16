@@ -1,22 +1,57 @@
-#modal-content{
-    display: flexbox;
-    border-radius: 20px;
-    width: 33%;
+div#modal-content {
+  display: flex;
+  justify-items: space-around;
+  position: absolute;
+  top: 100px;
+  margin: 0;
+  border-radius: 15px;
+  width: max-content;
+  height: max-content;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: auto;
+}
+
+.loginDiv > h1 {
+  text-align: center;
+  font-family: cursive;
+
+}
+
+div#modal-content button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ margin: 0 60px;
+  width: 50%;
+  padding:10px 0px;
+}
+
+div#modal-content label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div#modal-content input {
+    box-sizing: border-box;
+  background-color:  #E8F0FE ;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 20px;
+}
+
+.loginButton:disabled{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+
+}
+.loginButton:enabled{
+   background-color: red;
+   color: white;
+}
+
+.demoUser{
     text-align: center;
-    margin-top: 100px;
-    align-content: space-evenly;
-
-}
-
-label{
-    text-align: left;
-    float: left;
-}
-
-#modal-content button{
-width: 50%;
-}
-
-.errors{
-    color: red;
 }

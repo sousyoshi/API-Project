@@ -25,7 +25,7 @@ const SpotsLanding = () => {
             <p className="spotDetails">
               {spot.city}, {spot.state}
             </p>
-            <p className="spotRating"><i className="fa-solid fa-star"></i>{spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</p>
+            <p className="spotRating"><i class="fa-solid fa-star"></i>{spot.avgRating ? spot.avgRating.toFixed(1) : "New"}</p>
             <p className="spotPrice">${spot.price.toLocaleString("en-US")} night</p>
           </div>
         );

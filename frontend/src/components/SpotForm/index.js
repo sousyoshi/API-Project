@@ -18,22 +18,11 @@ const SpotForm = ({ spot, formType }) => {
   const [price, setPrice] = useState("");
   const [state, setState] = useState("");
   const [newUrl, setUrl] = useState({ url: "", preview: true });
+  const [newUrl2, setUrl2] = useState({ url: "", preview: true });
+  const [newUrl3, setUrl3] = useState({ url: "", preview: true });
+  const [newUrl4, setUrl4] = useState({ url: "", preview: true });
+  const [newUrl5, setUrl5] = useState({ url: "", preview: true });
   const [valErrors, setValErrors] = useState({});
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const newSpot = { ...spot, ownerId: user.id, country, lat: 88, lng: 150.595959, city, address, description, name, price, state };
-    console.log(newSpot);
-    if (formType === "Update your spot") {
-      const newerSpot = await dispatch(editSpotThunk(newSpot));
-      console.log("this is what i need", newerSpot);
-      history.push(`/spots/${spot.id}`);
-    } else {
-      const newerSpot = await dispatch(createSpotThunk(newSpot, newUrl));
-      const newNew = newerSpot;
-      history.push(`/spots/${newNew.id}`);
-    }
-  };
 
   useEffect(() => {
     if (!!spot) {
@@ -43,25 +32,45 @@ const SpotForm = ({ spot, formType }) => {
       setState(spot.state);
       setDescription(spot.description);
       setPrice(spot.price);
-      setName(spot.name)
+      setName(spot.name);
     }
   }, [spot]);
 
   useEffect(() => {
     const errors = {};
-    if (!country.length) errors.country = "Country is required";
-    if (!city.length) errors.city = "City is required";
-    if (!address.length) errors.address = "Address is required";
-    if (!state.length) errors.state = "State is required";
-    if (description.length < 30) errors.description = "Description needs a minimum of 30 characters";
-    if (!name.length) errors.name = "Name is required";
-    if (!price.length) errors.price = "Price is required";
-    if (!newUrl.url.length) errors.newUrl = "Preview image is required";
-    if (!newUrl.url.endsWith(".png") && !newUrl.url.endsWith(".jpeg") && !newUrl.url.endsWith(".jpg"))
+    if (!country?.length) errors.country = "Country is required";
+    if (!city?.length) errors.city = "City is required";
+    if (!address?.length) errors.address = "Address is required";
+    if (!state?.length) errors.state = "State is required";
+    if (description?.length < 30) errors.description = "Description needs a minimum of 30 characters";
+    if (!name?.length) errors.name = "Name is required";
+    if (!price?.length) errors.price = "Price is required";
+    if (!newUrl?.url.length) errors.newUrl = "Preview image is required";
+    if (!newUrl?.url.endsWith(".png") && !newUrl?.url.endsWith(".jpeg") && !newUrl?.url.endsWith(".jpg"))
       errors.newUrlImages = "Image URL must end in .png, .jpg, or .jpeg";
 
     setValErrors(errors);
   }, [country, city, address, description, name, price, state, newUrl]);
+
+
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newSpot = { ...spot, ownerId: user.id, country, lat: 88, lng: 150.595959, city, address, description, name, price, state };
+    console.log(newSpot);
+    if (formType === "Update your spot") {
+      const newerSpot = await dispatch(editSpotThunk(newSpot));
+      history.push(`/spots/${spot.id}`);
+      return newerSpot;
+    } else {
+      const newerSpot = await dispatch(createSpotThunk(newSpot, [newUrl, newUrl2, newUrl3]));
+      if (newerSpot) {
+        const newNew = newerSpot
+        history.push(`/spots/${newNew.id}`);
+      }
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -115,14 +124,38 @@ const SpotForm = ({ spot, formType }) => {
         <div>
           <h3>Liven up your spot with photos</h3>
           <p>Submit a link to at least one photo to publish your spot.</p>
+          {valErrors.newUrl && <p className="errors">{valErrors.newUrl}</p>}
+          {valErrors.newUrlImages && <p className="errors">{valErrors.newUrlImages}</p>}
           <input
             placeholder="Preview Image URL"
             type="text"
             value={newUrl.url}
             onChange={(e) => setUrl({ ...newUrl, url: e.target.value })}
           />{" "}
-          {valErrors.newUrl && <p className="errors">{valErrors.newUrl}</p>}
-          {valErrors.newUrlImages && <p className="errors">{valErrors.newUrlImages}</p>}
+          <input
+            placeholder="Image URL"
+            type="text"
+            value={newUrl2.url}
+            onChange={(e) => setUrl2({ ...newUrl2, url: e.target.value })}
+          />{" "}
+          <input
+            placeholder="Image URL"
+            type="text"
+            value={newUrl3.url}
+            onChange={(e) => setUrl3({ ...newUrl3, url: e.target.value })}
+          />{" "}
+          <input
+            placeholder="Image URL"
+            type="text"
+            value={newUrl4.url}
+            onChange={(e) => setUrl4({ ...newUrl4, url: e.target.value })}
+          />{" "}
+          <input
+            placeholder="Image URL"
+            type="text"
+            value={newUrl5.url}
+            onChange={(e) => setUrl5({ ...newUrl5, url: e.target.value })}
+          />{" "}
         </div>
       ) : null}
 
