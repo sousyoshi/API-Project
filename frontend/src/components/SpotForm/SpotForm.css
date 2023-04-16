@@ -1,40 +1,78 @@
-/* body {
-  margin: 20px;
-  max-width: 100%;
-}
-
-form {
-  display: flex;
-  flex-flow: column wrap;
+.spotForm {
+  display: table;
+  position: absolute;
+  justify-content: center;
   align-items: center;
+  width: 50%;
+  margin-left: 25%;
+  block-size: fit-content;
+  margin-bottom: 100px;
 
 }
 
-input {
-display: flex;
-  font-size: 14pt;
-  background-color: #e8f0fe;
+.spotForm .textarea {
+  border-bottom: 2px solid black;
+  margin-bottom: 10px;
+}
+
+.spotForm textarea {
+  margin-bottom: 10px;
+  resize: none;
+}
+
+.spotForm h2 {
+  font-size: 20pt;
+  margin: 15px 0;
+}
+.spotForm h3 {
+  font-size: 15pt;
+}
+
+
+.spotForm .firstField {
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  border: none;
+  margin-bottom: 20px;
+}
+
+.spotForm .firstField input {
+  float: left;
+  margin: 0;
+  padding: 0;
+  height: 20px;
+}
+
+.spotForm input {
   width: 100%;
+  background-color: #e8f0fe;
+  margin: 5px;
+}
 
+.stateDiv {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  float: left;
+  padding: 0;
+  padding-top: 10px;
+  gap: 20px;
+  width: 100%;
+}
 
+.priceInput:before {
+  position: relative;
+  content: "$";
+  top: 24px;
+  right: 9px;
 
 }
 
-h2 {
-  font-weight: bold;
-  font-size: 24pt;
+.submitForm {
+  align-self: center;
 }
 
-h3 {
-  font-size: 18pt;
-  font-weight: bold;
+.countryStateDiv{
+  display: flex;
+  flex-direction: column;
 }
-
-p {
-  font-size: 14pt;
-}
-
-button {
-  font-size: 14pt;
-  cursor: pointer;
-} */

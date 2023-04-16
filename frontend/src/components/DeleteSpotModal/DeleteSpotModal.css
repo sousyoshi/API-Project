@@ -1,0 +1,24 @@
+.deleteForm h1{
+   text-align: center;
+   font-family: cursive;
+
+}
+
+.deleteForm div{
+    display: grid;
+    justify-content: center;
+
+
+
+}
+
+.deleteButton{
+    background-color: red;
+    color:white;
+    width: 100%;
+}
+
+.deleteForm button{
+    margin: 0;
+    padding: 0;
+}
