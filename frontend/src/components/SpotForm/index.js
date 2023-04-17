@@ -65,7 +65,7 @@ const SpotForm = ({ spot, formType }) => {
       history.push(`/spots/${spot.id}`);
       return newerSpot;
     } else {
-      const newerSpot = await dispatch(createSpotThunk(newSpot, [newUrl, newUrl2, newUrl3]));
+      const newerSpot = await dispatch(createSpotThunk(newSpot, [newUrl, newUrl2, newUrl3, newUrl4, newUrl5]));
       if (newerSpot) {
         const newNew = newerSpot;
         history.push(`/spots/${newNew.id}`);
@@ -144,7 +144,7 @@ const SpotForm = ({ spot, formType }) => {
         </span>
       </label>
       {formType === "Create a new Spot" ? (
-        <div>
+        <div className="imageDiv">
           <h3>Liven up your spot with photos</h3>
           <p>Submit a link to at least one photo to publish your spot.</p>
           {valErrors.newUrl && <div className="errors">{valErrors.newUrl}</div>}
@@ -181,10 +181,12 @@ const SpotForm = ({ spot, formType }) => {
           />{" "}
         </div>
       ) : null}
-
-      <button className="submitForm" type="submit">
+    <div className="buttonDiv">
+ <button className="submitForm" type="submit">
         {formType}
       </button>
+    </div>
+
     </form>
   );
 };

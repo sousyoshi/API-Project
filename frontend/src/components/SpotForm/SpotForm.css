@@ -21,11 +21,11 @@
 }
 
 .spotForm h2 {
-  font-size: 20pt;
+  font-size: 28pt;
   margin: 15px 0;
 }
 .spotForm h3 {
-  font-size: 15pt;
+  font-size: 18pt;
 }
 
 
@@ -67,12 +67,27 @@
   right: 9px;
 
 }
+.submitForm{
 
-.submitForm {
-  align-self: center;
+  width: 150px;
+
+ background-color: red;
+ color: white;
 }
 
+
+.buttonDiv{
+ display: flex;
+justify-content: center;
+
+}
 .countryStateDiv{
-  display: flex;
+ display: flex;
   flex-direction: column;
+}
+
+.imageDiv{
+  border-bottom: 3px solid grey;
+  padding: 10px;
+  margin-bottom: 20px;
 }

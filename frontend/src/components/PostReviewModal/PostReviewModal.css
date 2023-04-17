@@ -1,4 +1,4 @@
-.rating{display: flex;}
+
 
 .rating .filled    {
     background-color: transparent;
@@ -9,6 +9,7 @@
 
 .filled{
     color: rgba(255, 255, 0, 0.448);
+
 }
 
 .empty{

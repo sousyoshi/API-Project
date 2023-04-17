@@ -44,35 +44,39 @@ const SingleSpot = () => {
       <p>
         {spot.city}, {spot.state} {spot.country}
       </p>
-      <ul className="spotImageArray">
+      <div className="spotImageArray">
         {spot.SpotImages?.map((spot) => {
           return (
-            <li key={spot.id}>
-              <img className="image" alt="img" src={spot?.url} />
-            </li>
+            <div className={`imageAt`} key={spot.id}>
+              <img className={`image`} alt="img" src={spot?.url} />
+            </div>
           );
         })}
-      </ul>
-      <h2>
-        Hosted by {spot.Owner?.firstName} {spot.Owner?.lastName}
-      </h2>
-      <p>{spot.description}</p>
-      <section className="calloutBox">
-        <h3>${spot.price?.toLocaleString("en-US")} night </h3>
-        <i class="fa-solid fa-star"></i>
-        <p>{spot.avgStarRating?.toFixed(2) || "New"} </p>
+      </div>
+      <div className="hostDiv">
+        <h2>
+          Hosted by {spot.Owner?.firstName} {spot.Owner?.lastName}
+        </h2>
+        <p>{spot.description}</p>
+      </div>
+
+      <div className="calloutBox">
+        {" "}
+        <div className="calloutstuff">
+          <h3>${spot.price?.toLocaleString("en-US")} night </h3>
+          <i class="fa-solid fa-star"></i>
+          <p>{spot.avgStarRating?.toFixed(2) || "New"} </p>
+        </div>
         {spot.numReviews === 0 ? null : (
-          <div>
+          <div className="ratingdiv">
             {" "}
-            <p> &#x2022;</p>
-            <p>{spot.numReviews > 1 ? `${spot.numReviews} reviews` : `${spot.numReviews} review`}</p>
+            <p className="reviewP"> &#x2022;{spot.numReviews > 1 ? `${spot.numReviews} reviews` : `${spot.numReviews} review`}</p>
           </div>
         )}
-
         <button onClick={comingSoon} className="reserve">
           Reserve
         </button>
-      </section>
+      </div>
       <div>
         <i class="fa-solid fa-star"></i> <h2>{!!reviewVal.length ? spot.avgStarRating?.toFixed(2) : "New"}</h2>
         {spot.numReviews === 0 ? null : (
@@ -88,19 +92,25 @@ const SingleSpot = () => {
           <OpenModalButton buttonText={"Post your Review"} modalComponent={<PostReviewModal spot={spot} />} />
         </div>
       )}
-      <ul>
-        {!reviewVal.length && !userOwnedSpot ? "Be the first to post a review!": sortedReviews.map((review) => {
-          return (
-            <li key={review?.id}>
-              {review.User.firstName},{" "}
-              {new Date(review.createdAt.slice(0, 10)).toLocaleDateString("en-US", { month: "long", year: "numeric" })},{" "}
-              {review.review}{" "}
-              {sessionUser && sessionUser?.id === review.User.id && (
-                <OpenModalButton buttonText={"Delete"} modalComponent={<DeleteReviewModal reviewVal={reviewVal} spotId={spotId} />} />
-              )}
-            </li>
-          );
-        })}
+      <ul className="reviews">
+        {!reviewVal.length && !userOwnedSpot
+          ? "Be the first to post a review!"
+          : sortedReviews.map((review) => {
+              return (
+                <li key={review?.id}>
+                  <p>{review.User.firstName}{" "}</p>
+                  <p>{new Date(review.createdAt.slice(0, 10)).toLocaleDateString("en-US", { month: "long", year: "numeric" })}{" "}</p>
+                   <p>{review.review}{" "}</p>
+
+                  {sessionUser && sessionUser?.id === review.User.id && (
+                    <OpenModalButton
+                      buttonText={"Delete"}
+                      modalComponent={<DeleteReviewModal reviewVal={reviewVal} spotId={spotId} />}
+                    />
+                  )}
+                </li>
+              );
+            })}
       </ul>
     </main>
   );
