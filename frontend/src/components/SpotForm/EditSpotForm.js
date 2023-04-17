@@ -16,7 +16,7 @@ const EditSpotForm = () => {
   useEffect(() => {
     dispatch(getSingleSpotThunk(spotId));
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [dispatch, spotId]);
 
   const spot = {...data
     // country: data.country,
@@ -28,7 +28,7 @@ const EditSpotForm = () => {
     // price: data.price
 
   }
-   
+
   return <SpotForm spot={spot} formType="Update your spot" />;
 };
 export default EditSpotForm;

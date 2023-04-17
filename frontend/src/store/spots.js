@@ -13,7 +13,7 @@ export const deleteSpotThunk = (spotId) => async (dispatch) => {
     method: "DELETE",
   });
   if (res.ok) {
-   return dispatch(deleteSpot(spotId));
+    return dispatch(deleteSpot(spotId));
   }
 };
 
@@ -49,7 +49,7 @@ export const getSingleSpotThunk = (spotId) => async (dispatch) => {
 
   if (res.ok) {
     const spot = await res.json();
-    const spotData = await dispatch(getSingleSpot(spot)) ;
+    const spotData = await dispatch(getSingleSpot(spot));
 
     return spotData;
   }
@@ -57,7 +57,7 @@ export const getSingleSpotThunk = (spotId) => async (dispatch) => {
 
 export const createSpot = (spot) => ({ type: CREATE_SPOT, spot });
 export const createImage = (image) => ({ type: CREATE_IMAGE, image });
-export const createSpotThunk = (spot, url) => async (dispatch) => {
+export const createSpotThunk = (spot, urlArr) => async (dispatch) => {
   const res = await csrfFetch("/api/spots", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -67,13 +67,18 @@ export const createSpotThunk = (spot, url) => async (dispatch) => {
   if (res.ok) {
     const spot = await res.json();
     await dispatch(createSpot(spot));
-    const imageRes = await csrfFetch(`/api/spots/${spot.id}/images`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(url),
-    });
-    const image = await imageRes.json();
-    dispatch(createImage(image));
+    for (let i = 0; i < urlArr.length; i++) {
+      const imageRes = await csrfFetch(`/api/spots/${spot.id}/images`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(urlArr[i]),
+      });
+      const image = await imageRes.json();
+      if (imageRes.ok) {
+        await dispatch(createImage(image));
+      }
+    }
+
     return spot;
   }
 };
@@ -90,7 +95,7 @@ const spotsReducer = (state = initialState, action) => {
       return newState;
     }
     case SINGLE_SPOT: {
-      const newState = { ...state, singleSpot:{...state.singleSpot} };
+      const newState = { ...state, singleSpot: { ...state.singleSpot } };
       newState.singleSpot = action.spot;
       return newState;
     }
@@ -100,7 +105,7 @@ const spotsReducer = (state = initialState, action) => {
       return newState;
     }
     case CREATE_SPOT: {
-      const newState = { ...state, allSpots:{...state.allSpots}, singleSpot: { SpotImages: [], Owner: {} } };
+      const newState = { ...state, allSpots: { ...state.allSpots }, singleSpot: { SpotImages: [], Owner: {} } };
       newState.allSpots[action.spot.id] = action.spot;
       return newState;
     }

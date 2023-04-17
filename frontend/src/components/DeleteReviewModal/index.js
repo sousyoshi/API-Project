@@ -21,6 +21,7 @@ console.log('theseseeeeeeeee', reviewId)
      await dispatch(getReviewsThunk(spotId))
      await dispatch(getSingleSpotThunk(spotId))
      await closeModal()
+     await history.push(`/api/spots/${spotId}`)
   };
 
   return (

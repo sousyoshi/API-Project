@@ -1,5 +1,5 @@
 import { createReviewThunk } from "../../store/reviews";
-import { getSpotsThunk, getSingleSpot, getSingleSpotThunk } from "../../store/spots";
+import {  getSingleSpotThunk } from "../../store/spots";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";

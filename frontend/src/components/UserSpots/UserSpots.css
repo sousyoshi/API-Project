@@ -1,0 +1,50 @@
+.userSpotContainer {
+
+  margin: 20px 0px;
+  padding: 0;
+  width: 100%;
+}
+
+.userSpotContainer ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: auto;
+  list-style-type: none;
+  justify-items: center;
+  justify-content: space-around;
+  margin: 20px auto;
+  padding: 0 20px;
+  column-gap: 20px;
+}
+
+.userSpotImage {
+  width: 100%;
+  height: 100%;
+}
+.userSpotDetails {
+  font-size: 14pt;
+
+  width: fit-content;
+  margin: 0;
+}
+
+.userSpotRating {
+  position: relative;
+  bottom: 20px;
+  float: right;
+  margin: 0;
+  padding: 0;
+}
+
+.userSpotPrice {
+  font-size: 14pt;
+}
+
+.userButtons {
+    display: flex;
+    gap: 15px
+}
+.userButtons button{
+    width: 75px;
+
+}
